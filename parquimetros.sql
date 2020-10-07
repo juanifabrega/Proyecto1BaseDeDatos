@@ -4,16 +4,16 @@ CREATE DATABASE parquimetros;
 # selecciono la base de datos sobre la cual voy a hacer modificaciones
 USE parquimetros;
 
-#-------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------
 # Creación Tablas para las entidades
 
 CREATE TABLE conductores(
-	dni INT NOT NULL,
+	dni INT UNSIGNED NOT NULL,
 	nombre VARCHAR(45) NOT NULL,
 	apellido VARCHAR(45) NOT NULL,
 	direccion VARCHAR(45) NOT NULL,
 	telefono VARCHAR(45) NOT NULL,
-	registro INT NOT NULL,
+	registro INT UNSIGNED NOT NULL,
 
 	CONSTRAINT pk_conductores PRIMARY KEY (dni),
 
@@ -24,17 +24,18 @@ CREATE TABLE automoviles(
 	marca VARCHAR(45) NOT NULL,
 	modelo VARCHAR(45) NOT NULL,
 	color VARCHAR(45) NOT NULL,
-	dni INT NOT NULL,
+	dni INT UNSIGNED NOT NULL,
 
 	CONSTRAINT pk_automoviles PRIMARY KEY (patente),
-
-	CONSTRAINT FK_automovil_conductores FOREIGN KEY (dni) REFERENCES conductores (dni),
+	#ver a la hora de borrar
+	CONSTRAINT FK_automovil_conductores FOREIGN KEY (dni) REFERENCES conductores (dni)
+		ON DELETE RESTRICT ON UPDATE CASCADE
 
 )ENGINE=InnoDB;
 
 CREATE TABLE tipos_tarjeta(
 	tipo VARCHAR(45) NOT NULL,
-	descuento FLOAT(3,2) NOT NULL, #float sin color
+	descuento FLOAT(3,2) NOT NULL, 
 
 	CONSTRAINT pk_tipos_tarjeta PRIMARY KEY (tipo),
 
@@ -43,22 +44,23 @@ CREATE TABLE tipos_tarjeta(
 )ENGINE=InnoDB;
 
 CREATE TABLE tarjeta(
-	id_tarjeta INT NOT NULL,
+	id_tarjeta INT UNSIGNED NOT NULL,
 	saldo FLOAT(5,2) NOT NULL,
 	tipo VARCHAR(45) NOT NULL,
 	patente VARCHAR(6) NOT NULL,
 
 	CONSTRAINT pk_tipos_tarjeta PRIMARY KEY(id_tarjeta),
-
+	#a la hora de borrar???
 	CONSTRAINT FK_tarjeta_tipos_tarjeta FOREIGN KEY (tipo) REFERENCES tipos_tarjeta(tipo),
-
-	CONSTRAINT FK_tarjeta_automoviles FOREIGN KEY (patente) REFERENCES automoviles(patente),
+	#a la hora de borrar???
+	CONSTRAINT FK_tarjeta_automoviles FOREIGN KEY (patente) REFERENCES automoviles(patente)
+		ON DELETE RESTRICT ON UPDATE CASCADE,
 
 )ENGINE=InnoDB;
 
 CREATE TABLE inspectores(
-	legajo INT NOT NULL,
-	dni INT NOT NULL,
+	legajo INT UNSIGNED NOT NULL,
+	dni INT UNSIGNED NOT NULL,
 	nombre VARCHAR(45) NOT NULL,
 	apellido VARCHAR(45) NOT NULL,
 	password VARCHAR(32) NOT NULL,
@@ -69,7 +71,7 @@ CREATE TABLE inspectores(
 
 CREATE TABLE ubicaciones(
 	calle VARCHAR(45) NOT NULL, 
-	altura INT NOT NULL,
+	altura INT UNSIGNED NOT NULL,
 	tarifa FLOAT(5,2) NOT NULL,
 
 	CONSTRAINT pk_ubicaciones PRIMARY KEY (calle,altura),
@@ -79,75 +81,109 @@ CREATE TABLE ubicaciones(
 )ENGINE=InnoDB;
 
 CREATE TABLE parquimetros(
-	id_parq INT NOT NULL, #es un numero natural ??? hago un chek >0?
-	numero INT NOT NULL, #es un numero natural ???
+	id_parq INT NOT NULL,
+	numero INT NOT NULL, 
 	calle VARCHAR(45) NOT NULL,
-	altura INT NOT NULL,
+	altura INT UNSIGNED NOT NULL,
 
 	CONSTRAINT pk_parquimetros PRIMARY KEY (id_parq),
-
+	#a la hora de borrar???
 	CONSTRAINT FK_parquimetros_ubicaciones FOREIGN KEY (calle,altura) REFERENCES ubicaciones(calle,altura),
-	#calle y altura corresponden a una ubicacion DE ESTA MANERA ME ASEGURA QUE EXISTA EL PAR calle altura???
 
 )ENGINE=InnoDB;
 
 CREATE TABLE estacionamientos( #PREGUNTAR
-	id_tarjeta INT NOT NULL,
+	id_tarjeta INT UNSIGNED NOT NULL,
 	id_parq INT NOT NULL,
 	fecha-ent DATE NOT NULL,
-	hora-ent DATETIME NOT NULL,
-	fecha-sal DATE NOT NULL,
-	hora-sal DATETIME NOT NULL,
+	hora-ent TIME NOT NULL,
+	fecha-sal DATE ,
+	hora-sal TIME ,
 
 	CONSTRAINT pk_estacionamientos PRIMARY KEY(id_parq,fecha-ent,hora-ent),
-
-	CONSTRAINT FK_estacionamientos_tarjeta FOREIGN KEY (id_tarjeta) REFERENCES tarjeta(id_tarjeta),
-
-	CONSTRAINT FK_estacionamientos_parquimetros FOREIGN KEY (id_parq) REFERENCES parquimetros(id_parq),
-
+	#a la hora de borrar???
+	CONSTRAINT FK_estacionamientos_tarjeta FOREIGN KEY (id_tarjeta) REFERENCES tarjeta(id_tarjeta)
+		ON DELETE RESTRICT UPDATE CASCADE,
+	#a la hora de borrar???
+	CONSTRAINT FK_estacionamientos_parquimetros FOREIGN KEY (id_parq) REFERENCES parquimetros(id_parq)
+		ON DELETE RESTRICT UPDATE CASCADE,
+	
 )ENGINE=InnoDB;
 
 CREATE TABLE accede(
 	legajo INT NOT NULL,
 	id_parq INT NOT NULL, #es un numero natural ??? hago un chek >0?
 	fecha DATE NOT NULL,
-	hora DATETIME NOT NULL,
+	hora TIME NOT NULL,
 
 	CONSTRAINT pk_accede PRIMARY KEY(id_parq,fecha,hora),
-
-	CONSTRAINT FK_accede_inspectores FOREIGN KEY (legajo) REFERENCES inspectores(legajo),
-
-	CONSTRAINT FK_accede_parquimetros FOREIGN KEY (id_parq) REFERENCES parquimetros(id_parq),
+	#a la hora de borrar???
+	CONSTRAINT FK_accede_inspectores FOREIGN KEY (legajo) REFERENCES inspectores(legajo)
+		ON DELETE RESTRICT UPDATE CASCADE,
+	#a la hora de borrar???
+	CONSTRAINT FK_accede_parquimetros FOREIGN KEY (id_parq) REFERENCES parquimetros(id_parq)
+		ON DELETE RESTRICT UPDATE CASCADE,
 
 )ENGINE=InnoDB;
 
 CREATE TABLE asociado_con(
-	id_asociado_con INT NOT NULL,
+	id_asociado_con INT UNSIGNED NOT NULL,
 	legajo INT NOT NULL,
 	calle VARCHAR(45) NOT NULL,
-	altura INT NOT NULL,
-	dia ENUM('Lu','Ma','Mi', 'Ju','Vi' , 'Sa' , 'Do'), #esta bien???
-	turno ENUM('M' , 'T'), #esta bien???
+	altura INT UNSIGNED NOT NULL,
+	dia ENUM('Lu','Ma','Mi', 'Ju','Vi' , 'Sa' , 'Do'),
+	turno ENUM('M' , 'T'),
 
 	CONSTRAINT pk_asociado_con PRIMARY KEY (id_asociado_con),
-
-	CONSTRAINT FK_asociado_con_inspectores FOREIGN KEY (legajo) REFERENCES inspectores(legajo),
-
-	CONSTRAINT FK_asociado_con_ubicaiones FOREIGN KEY (calle,altura) REFERENCES ubicaciones(calle,altura),
+	#a la hora de borrar???
+	CONSTRAINT FK_asociado_con_inspectores FOREIGN KEY (legajo) REFERENCES inspectores(legajo)
+		ON DELETE RESTRICT UPDATE CASCADE,
+	#a la hora de borrar???
+	CONSTRAINT FK_asociado_con_ubicaiones FOREIGN KEY (calle,altura) REFERENCES ubicaciones(calle,altura)
+		ON DELETE RESTRICT UPDATE CASCADE,
 
 )ENGINE=InnoDB;
 
 CREATE TABLE multa(
-	numero INT NOT NULL,
+	numero INT UNSIGNED NOT NULL,
 	fecha DATE NOT NULL,
-	hora DATETIME NOT NULL,
+	hora TIME NOT NULL,
 	patente VARCHAR(6) NOT NULL,
-	id_asociado_con INT NOT NULL,
+	id_asociado_con INT UNSIGNED NOT NULL,
 
 	CONSTRAINT pk_multa PRIMARY KEY (numero),
 
-	CONSTRAINT FK_multa_automoviles FOREIGN KEY (patente) REFERENCES automoviles(patente),
+	CONSTRAINT FK_multa_automoviles FOREIGN KEY (patente) REFERENCES automoviles(patente)
+		ON DELETE RESTRICT UPDATE CASCADE,
 
-	CONSTRAINT FK_multa_asociado_con FOREIGN KEY (id_asociado_con) REFERENCES asociado_con(id_asociado_con),
+	CONSTRAINT FK_multa_asociado_con FOREIGN KEY (id_asociado_con) REFERENCES asociado_con(id_asociado_con)
+		ON DELETE RESTRICT UPDATE CASCADE,
 
 )ENGINE=InnoDB;
+
+#-----------------------------------------------------------------------------------------------
+#Creacion de vistas
+
+#creacion de la vista estacionados
+CREATE VIEW estacionados AS
+	SELECT calle,altura
+	FROM estacionamientos NATURAL JOIN parquimetros NATURAL JOIN tarjeta
+	WHERE fecha-sal is NULL AND hora-sal is NULL    
+
+
+#-----------------------------------------------------------------------------------------------
+#Creacion de usuarios y privilegios
+
+#creacion del usuario admin
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
+GRANT ALL PROVILEGES ON parquimetros.* TO 'admin'@'localhost' WITH GRANT OPTION;
+
+#creacion del usuario venta
+CREATE USER 'venta'@'%' IDENTIFIED BY 'venta';
+GRANT INSERT ON parquimetros.tarjeta TO 'venta'@'%';
+
+#creacion del usuario inspector
+CREATE USER inspector IDENTIFIED BY 'inspector';
+GRANT SELECT ON parquimetros.estacionados TO 'inspector'@'%';
+GRANT INSERT ON parquimetros.multa TO 'inspector'@'%';
+GRANT INSERT ON parquimetros.accede TO 'inspector'@'%';
