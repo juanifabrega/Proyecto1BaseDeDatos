@@ -12,7 +12,7 @@ CREATE TABLE conductores(
 	nombre VARCHAR(45) NOT NULL,
 	apellido VARCHAR(45) NOT NULL,
 	direccion VARCHAR(45) NOT NULL,
-	telefono VARCHAR(45) NOT NULL,
+	telefono VARCHAR(45),
 	registro INT UNSIGNED NOT NULL,
 
 	CONSTRAINT pk_conductores PRIMARY KEY (dni)
@@ -35,7 +35,7 @@ CREATE TABLE automoviles(
 
 CREATE TABLE tipos_tarjeta(
 	tipo VARCHAR(45) NOT NULL,
-	descuento FLOAT(3,2) NOT NULL, 
+	descuento DECIMAL(3,2) UNSIGNED NOT NULL, 
 
 	CONSTRAINT pk_tipos_tarjeta PRIMARY KEY (tipo),
 
@@ -43,9 +43,9 @@ CREATE TABLE tipos_tarjeta(
 	
 )ENGINE=InnoDB;
 
-CREATE TABLE tarjeta(
-	id_tarjeta INT UNSIGNED NOT NULL,
-	saldo FLOAT(5,2) NOT NULL,
+CREATE TABLE tarjetas(
+	id_tarjeta INT UNSIGNED NOT NULL AUTO_INCREMENT,
+	saldo DECIMAL(5,2) NOT NULL,
 	tipo VARCHAR(45) NOT NULL,
 	patente VARCHAR(6) NOT NULL,
 
@@ -72,7 +72,7 @@ CREATE TABLE inspectores(
 CREATE TABLE ubicaciones(
 	calle VARCHAR(45) NOT NULL, 
 	altura INT UNSIGNED NOT NULL,
-	tarifa FLOAT(5,2) NOT NULL,
+	tarifa DECIMAL(5,2) UNSIGNED NOT NULL,
 
 	CONSTRAINT pk_ubicaciones PRIMARY KEY (calle,altura),
 
@@ -81,8 +81,8 @@ CREATE TABLE ubicaciones(
 )ENGINE=InnoDB;
 
 CREATE TABLE parquimetros(
-	id_parq INT NOT NULL,
-	numero INT NOT NULL, 
+	id_parq INT UNSIGNED NOT NULL,
+	numero INT UNSIGNED NOT NULL, 
 	calle VARCHAR(45) NOT NULL,
 	altura INT UNSIGNED NOT NULL,
 
@@ -92,9 +92,9 @@ CREATE TABLE parquimetros(
 
 )ENGINE=InnoDB;
 
-CREATE TABLE estacionamientos( #PREGUNTAR
+CREATE TABLE estacionamientos(
 	id_tarjeta INT UNSIGNED NOT NULL,
-	id_parq INT NOT NULL,
+	id_parq INT UNSIGNED NOT NULL,
 	fecha_ent DATE NOT NULL,
 	hora_ent TIME NOT NULL,
 	fecha_sal DATE ,
@@ -102,7 +102,7 @@ CREATE TABLE estacionamientos( #PREGUNTAR
 
 	CONSTRAINT pk_estacionamientos PRIMARY KEY(id_parq,fecha_ent,hora_ent),
 	#a la hora de borrar???
-	CONSTRAINT FK_estacionamientos_tarjeta FOREIGN KEY (id_tarjeta) REFERENCES tarjeta(id_tarjeta)
+	CONSTRAINT FK_estacionamientos_tarjeta FOREIGN KEY (id_tarjeta) REFERENCES tarjetas(id_tarjeta)
 		ON DELETE RESTRICT ON UPDATE CASCADE,
 	#a la hora de borrar???
 	CONSTRAINT FK_estacionamientos_parquimetros FOREIGN KEY (id_parq) REFERENCES parquimetros(id_parq)
@@ -112,7 +112,7 @@ CREATE TABLE estacionamientos( #PREGUNTAR
 
 CREATE TABLE accede(
 	legajo INT UNSIGNED NOT NULL,
-	id_parq INT NOT NULL, #es un numero natural ??? hago un chek >0?
+	id_parq INT UNSIGNED NOT NULL,
 	fecha DATE NOT NULL,
 	hora TIME NOT NULL,
 
@@ -127,12 +127,12 @@ CREATE TABLE accede(
 )ENGINE=InnoDB;
 
 CREATE TABLE asociado_con(
-	id_asociado_con INT UNSIGNED NOT NULL,
+	id_asociado_con INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	legajo INT UNSIGNED NOT NULL,
 	calle VARCHAR(45) NOT NULL,
 	altura INT UNSIGNED NOT NULL,
-	dia ENUM('Lu','Ma','Mi', 'Ju','Vi' , 'Sa' , 'Do'),
-	turno ENUM('M' , 'T'),
+	dia ENUM('do', 'lu', 'ma', 'mi', 'ju', 'vi', 'sa') NOT NULL,
+	turno ENUM('M' , 'T') NOT NULL,
 
 	CONSTRAINT pk_asociado_con PRIMARY KEY (id_asociado_con),
 	#a la hora de borrar???
@@ -145,7 +145,7 @@ CREATE TABLE asociado_con(
 )ENGINE=InnoDB;
 
 CREATE TABLE multa(
-	numero INT UNSIGNED NOT NULL,
+	numero INT UNSIGNED NOT NULL AUTO_INCREMENT,
 	fecha DATE NOT NULL,
 	hora TIME NOT NULL,
 	patente VARCHAR(6) NOT NULL,
@@ -166,8 +166,8 @@ CREATE TABLE multa(
 
 #creacion de la vista estacionados
 CREATE VIEW estacionados AS
-	SELECT calle,altura
-	FROM estacionamientos NATURAL JOIN parquimetros NATURAL JOIN tarjeta
+	SELECT calle,altura,patente
+	FROM estacionamientos NATURAL JOIN parquimetros NATURAL JOIN tarjetas
 	WHERE fecha_sal is NULL AND hora_sal is NULL;    
 
 #-----------------------------------------------------------------------------------------------
@@ -179,10 +179,12 @@ GRANT ALL PRIVILEGES ON parquimetros.* TO 'admin'@'localhost' WITH GRANT OPTION;
 
 #creacion del usuario venta
 CREATE USER 'venta'@'%' IDENTIFIED BY 'venta';
-GRANT INSERT ON parquimetros.tarjeta TO 'venta'@'%';
+GRANT INSERT ON parquimetros.tarjetas TO 'venta'@'%';
 
 #creacion del usuario inspector
 CREATE USER 'inspector'@'%' IDENTIFIED BY 'inspector';
+GRANT SELECT ON parquimetros.inspectores TO 'inspector'@'%';
+GRANT INSERT ON parquimetros.multa TO 'inspector'@'%'; 
 GRANT SELECT ON parquimetros.estacionados TO 'inspector'@'%';
-GRANT INSERT ON parquimetros.multa TO 'inspector'@'%';
 GRANT INSERT ON parquimetros.accede TO 'inspector'@'%';
+GRANT SELECT ON parquimetros.parquimetros TO 'inspector'@'%';
