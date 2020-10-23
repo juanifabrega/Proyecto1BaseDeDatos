@@ -11,6 +11,8 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import batallas.VentanaConsultas;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 
@@ -26,6 +28,7 @@ public class VentanaPrincipal {
 	private JMenuBar menu ;
 	private JMenuItem mntmConsultasDeAdmin;
 	private JMenuItem mntmInspector;
+	private VentanaConsultas vConsultas;
 
 	/**
 	 * Launch the application.
@@ -48,6 +51,12 @@ public class VentanaPrincipal {
 	 */
 	public VentanaPrincipal() {
 		initialize();
+		
+
+        vConsultas = new VentanaConsultas();
+        vConsultas.setVisible(false);
+        frame.add(vConsultas);
+		
 	}
 
 	/**
@@ -112,8 +121,7 @@ public class VentanaPrincipal {
 				mntmInspector.setBorder(borde);
 		    }
 			
-		});	
-		
+		});			
 		
 		
 		mntmInspector.addActionListener(new ActionListener() {
@@ -123,5 +131,6 @@ public class VentanaPrincipal {
           });
 		
 	}
+	
 
 }
