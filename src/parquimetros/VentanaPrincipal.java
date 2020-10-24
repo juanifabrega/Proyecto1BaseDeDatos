@@ -11,7 +11,6 @@ import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-import batallas.VentanaConsultas;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -29,6 +28,7 @@ public class VentanaPrincipal {
 	private JMenuItem mntmConsultasDeAdmin;
 	private JMenuItem mntmInspector;
 	private VentanaConsultas vConsultas;
+	private VentanaLoginAdmin vLoginAdmin;
 
 	/**
 	 * Launch the application.
@@ -66,6 +66,8 @@ public class VentanaPrincipal {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 853, 521);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.getRootPane().setBorder(BorderFactory.createMatteBorder(0, 3, 3, 3, Color.BLACK));
 		
 		menu = new JMenuBar();
 		frame.setJMenuBar(menu);
@@ -97,6 +99,8 @@ public class VentanaPrincipal {
 		mntmConsultasDeAdmin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 System.out.println("se abre ventana de admin");
+                vLoginAdmin = new VentanaLoginAdmin();
+                vLoginAdmin.setVisible(true);
              }
           });
 	
