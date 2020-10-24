@@ -16,12 +16,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.FlowLayout;
-import java.awt.BorderLayout;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
-import javax.swing.JSplitPane;
-import javax.swing.JTextArea;
 
 public class VentanaPrincipal {
 
@@ -31,9 +25,6 @@ public class VentanaPrincipal {
 	private JMenuItem mntmInspector;
 	private static VentanaConsultas vConsultas;
 	private VentanaLoginAdmin vLoginAdmin;
-	private JSplitPane splitPane;
-	private JScrollPane scrollPane;
-	private JScrollPane scrollPane_1;
 
 	
 	
@@ -55,22 +46,8 @@ public class VentanaPrincipal {
 		
 
         vConsultas = new VentanaConsultas();
-        vConsultas.setVisible(false);
-        vConsultas.setLocation(0, -12);
         frame.getContentPane().add(vConsultas);
-        vConsultas.getContentPane().setLayout(new BoxLayout(vConsultas.getContentPane(), BoxLayout.X_AXIS));
-        
-        splitPane = new JSplitPane();
-        splitPane.setDividerLocation(0.6);
-        splitPane.setResizeWeight(0.6);
-        
-        vConsultas.getContentPane().add(splitPane);
-        
-        scrollPane = new JScrollPane();
-        splitPane.setLeftComponent(scrollPane);
-        
-        scrollPane_1 = new JScrollPane();
-        splitPane.setRightComponent(scrollPane_1);
+
 		
 	}
 
