@@ -1,25 +1,27 @@
 package parquimetros;
 
 import java.awt.EventQueue;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JMenuBar;
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.FlowLayout;
+import java.awt.BorderLayout;
+import javax.swing.JScrollPane;
+import javax.swing.BoxLayout;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
 
 public class VentanaPrincipal {
 
@@ -27,12 +29,14 @@ public class VentanaPrincipal {
 	private JMenuBar menu ;
 	private JMenuItem mntmConsultasDeAdmin;
 	private JMenuItem mntmInspector;
-	private VentanaConsultas vConsultas;
+	private static VentanaConsultas vConsultas;
 	private VentanaLoginAdmin vLoginAdmin;
+	private JSplitPane splitPane;
+	private JScrollPane scrollPane;
+	private JScrollPane scrollPane_1;
 
-	/**
-	 * Launch the application.
-	 */
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -46,24 +50,32 @@ public class VentanaPrincipal {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public VentanaPrincipal() {
 		initialize();
 		
 
         vConsultas = new VentanaConsultas();
         vConsultas.setVisible(false);
-        frame.add(vConsultas);
+        vConsultas.setLocation(0, -12);
+        frame.getContentPane().add(vConsultas);
+        vConsultas.getContentPane().setLayout(new BoxLayout(vConsultas.getContentPane(), BoxLayout.X_AXIS));
+        
+        splitPane = new JSplitPane();
+        splitPane.setDividerLocation(0.6);
+        splitPane.setResizeWeight(0.6);
+        
+        vConsultas.getContentPane().add(splitPane);
+        
+        scrollPane = new JScrollPane();
+        splitPane.setLeftComponent(scrollPane);
+        
+        scrollPane_1 = new JScrollPane();
+        splitPane.setRightComponent(scrollPane_1);
 		
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
-		frame = new JFrame();
+		frame = new JFrame("Parquímetros");
 		frame.setBounds(100, 100, 853, 521);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
@@ -98,11 +110,11 @@ public class VentanaPrincipal {
 		
 		mntmConsultasDeAdmin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.out.println("se abre ventana de admin");
                 vLoginAdmin = new VentanaLoginAdmin();
                 vLoginAdmin.setVisible(true);
-             }
-          });
+            }
+        });
+		
 	
 		
 		mntmInspector = new JMenuItem("Inspector");
@@ -132,9 +144,13 @@ public class VentanaPrincipal {
             public void actionPerformed(ActionEvent evt) {
                 System.out.println("se abre ventana de inspector");
              }
-          });
-		
+        });
 	}
 	
-
+	
+	public static void setVentanaConsulta(boolean b) {
+		vConsultas.setVisible(b);
+	}
+	
+	
 }

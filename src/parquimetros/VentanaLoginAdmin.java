@@ -80,8 +80,8 @@ public class VentanaLoginAdmin extends JDialog {
 								    "Se ha logueado exitosamente", 
 								    "Bienvenido",
 								    JOptionPane.INFORMATION_MESSAGE);
-							logueoExitoso = true;
 		                    dispose();
+		                    VentanaPrincipal.setVentanaConsulta(true);
 						}
 						else {
 							JOptionPane.showMessageDialog(
@@ -90,7 +90,6 @@ public class VentanaLoginAdmin extends JDialog {
 								    "Error",
 								    JOptionPane.ERROR_MESSAGE);
 							passwordField.setText("");
-							logueoExitoso = false;
 						}
 						
 					}

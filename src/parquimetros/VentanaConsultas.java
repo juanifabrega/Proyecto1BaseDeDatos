@@ -3,12 +3,10 @@ package parquimetros;
 import java.awt.EventQueue;
 
 import javax.swing.JInternalFrame;
+import javax.swing.WindowConstants;
 
 public class VentanaConsultas extends JInternalFrame {
 
-	/**
-	 * Launch the application.
-	 */
 /*	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -22,12 +20,20 @@ public class VentanaConsultas extends JInternalFrame {
 		});
 	}
 */
-	/**
-	 * Create the frame.
-	 */
+	
+	
 	public VentanaConsultas() {
+		 super("", false, // resizable
+	               true,  // closable
+	               false, // maximizable
+	               false); // iconifiable
+		 
 		setBounds(100, 100, 450, 300);
-
+		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 	}
 
+	
+	
+	
+	
 }
