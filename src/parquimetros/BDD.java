@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import quick.dbtable.DBTable;
+
 
 public class BDD {
 
@@ -17,21 +19,32 @@ public class BDD {
 	 * No se si estará bien hecho así
 	 */
 	
+	private static final String driver = "com.mysql.cj.jdbc.Driver";
 	private static final String servidor = "localhost:3306";
 	private static final String baseDeDatos = "parquimetros";
-	private static final String url = "jdbc:mysql://"+ servidor + "/" + baseDeDatos;
-							 //  "?serverTimezone=America/Argentina/Buenos_Aires";
+	private static final String url = "jdbc:mysql://"+ servidor + "/" + baseDeDatos +
+							   "?serverTimezone=America/Argentina/Buenos_Aires";
+	private static String usuario;
+	private static String clave;
 	private static Connection conexion = null;
+
 	
 	
 	
-	public static Connection conectar(String usuario, String clave) throws SQLException, ClassNotFoundException {
+	public static Connection conectar(String user, String password) throws SQLException, ClassNotFoundException {
 		
-		Class.forName("com.mysql.cj.jdbc.Driver");
+		usuario = user;
+		clave = password;
+		Class.forName(driver);
 		conexion = DriverManager.getConnection(url, usuario, clave);
 		System.out.println("BDD conectada con usuario \""+usuario+"\".");			
 		
 		return conexion;
+	}
+	
+	
+	public static void vincularTabla(DBTable tabla) throws ClassNotFoundException, SQLException {
+		tabla.connectDatabase(driver, url, usuario, clave);
 	}
 		
 

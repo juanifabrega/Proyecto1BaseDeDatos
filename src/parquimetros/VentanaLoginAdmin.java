@@ -64,7 +64,7 @@ public class VentanaLoginAdmin extends JDialog {
 								    "Bienvenido",
 								    JOptionPane.INFORMATION_MESSAGE);
 		                    VentanaPrincipal.setVentanaConsulta(true); // cargo ventana consultas
-		                    VentanaConsultas.actualizarListas();
+		                    VentanaConsultas.logueoCompleto();
 		                    
 						} catch (SQLException ex) {
 							

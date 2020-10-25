@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
@@ -20,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import javax.swing.JTable;
 import javax.swing.JScrollBar;
@@ -37,12 +39,11 @@ public class VentanaConsultas extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 	private JSplitPane splitPane;
 	private JPanel panel;
-	private JTextArea textArea;
-	private JTable tabla;
+	private static JTextArea textArea;
+	private static DBTable tabla;
 	private JPanel panelListas;
     private static JList listaTablas;
     private static JList listaAtributos;
-    private JScrollBar scrollBar;
 	
 	
 	public VentanaConsultas() {
@@ -56,6 +57,7 @@ public class VentanaConsultas extends JInternalFrame {
 		 		dispose();
 		 		try {
 					BDD.desconectar();
+					VentanaPrincipal.setVentanaConsulta(false);
 				} catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null,
 		                    "No se pudo desconectar de la base de datos.\n" + ex.getMessage(),
@@ -109,43 +111,82 @@ public class VentanaConsultas extends JInternalFrame {
         panel_3.setLayout(new GridLayout(0, 1, 0, 0));
         panel_3.setMaximumSize(new Dimension(100,60));
         
-        JButton btnNewButton = new JButton("Ejecutar");
-        panel_3.add(btnNewButton);
+        JButton btnEjecutar = new JButton("Ejecutar");
+        btnEjecutar.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		actualizarTabla();
+        	}
+        });
+        panel_3.add(btnEjecutar);
 
-        JButton btnNewButton_2 = new JButton("Borrar");
-        btnNewButton_2.addMouseListener(new MouseAdapter() {
+        JButton btnBorrar = new JButton("Borrar");
+        btnBorrar.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
         		textArea.setText("");
         	}
         });
-        panel_3.add(btnNewButton_2);
+        panel_3.add(btnBorrar);
         
         //JScrollPane scrollPane = new JScrollPane();
         //panel.add(scrollPane, BorderLayout.CENTER);
         
 
+        
+        
         JPanel panelAbajo= new JPanel();
+        panelAbajo.setLayout(new BorderLayout(0,0));
         panel.add(panelAbajo, BorderLayout.CENTER);
         
-        
-        tabla = new JTable();
-        panelAbajo.add(tabla);
-        tabla.setAutoCreateRowSorter(true); // activa el ordenamiento por columnas, para
-        									// que se ordene al hacer click en una columna
-        
-        
 
-        // se define el modelo de la tabla
-        final class TablaBarcosModel extends DefaultTableModel{
-        
-        }
-        
-        
-  
+    	// crea la tabla  
+    	tabla = new DBTable();
+    	
+    	// Agrega la tabla al frame (no necesita JScrollPane como Jtable)
+        //panelAbajo.add(tabla, BorderLayout.CENTER);
+    	panelAbajo.add(tabla);
+                  
+        // setea la tabla para sólo lectura (no se puede editar su contenido)  
+        tabla.setEditable(false);  
         
         mostrarListas();
 	}
+	
+	
+
+	   private void actualizarTabla() {
+	      try {    
+	    	 // seteamos la consulta a partir de la cual se obtendrán los datos para llenar la tabla
+	    	 tabla.setSelectSql(textArea.getText().trim());
+
+	    	  // obtenemos el modelo de la tabla a partir de la consulta para 
+	    	  // modificar la forma en que se muestran de algunas columnas  
+	    	  tabla.createColumnModelFromQuery();    	    
+	    	  for (int i = 0; i < tabla.getColumnCount(); i++) { 
+	    		  
+	    		  // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
+	    		 if	 (tabla.getColumn(i).getType()==Types.TIME)     		 
+	    		    tabla.getColumn(i).setType(Types.CHAR);  
+	    		 
+	    		 // cambiar el formato en que se muestran los valores de tipo DATE
+	    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
+	    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");
+	    		 
+	          }  
+	    	  // actualizamos el contenido de la tabla.
+	    	  tabla.refresh();
+	       }
+	      catch (SQLException ex) {
+	         System.out.println("SQLException: " + ex.getMessage());
+	         System.out.println("SQLState: " + ex.getSQLState());
+	         System.out.println("VendorError: " + ex.getErrorCode());
+	         JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+	                                       ex.getMessage() + "\n", 
+	                                       "Error al ejecutar la consulta.",
+	                                       JOptionPane.ERROR_MESSAGE);
+	      }
+	   }
 
 	
 	public void mostrarListas() {
@@ -166,10 +207,39 @@ public class VentanaConsultas extends JInternalFrame {
         scroll_2.setViewportView(listaAtributos);
         listaAtributos.setLayoutOrientation(JList.VERTICAL);  
         panelListas.add(scroll_2);
+        
+        
+        // actualizo lista de tablas
+
+        listaTablas.addMouseListener(new MouseAdapter() {
+           public void mouseClicked(MouseEvent evt) {
+              if (evt.getClickCount() == 1) {
+                 JList target = (JList)evt.getSource();
+                 int index = target.locationToIndex(evt.getPoint());
+                 if (index >= 0) {
+                    String item = target.getModel().getElementAt(index).toString();                    
+                    try {
+                    	ResultSet resultado = BDD.ejecutarSentencia("DESCRIBE " + item + ";");
+            			DefaultListModel modelo = new DefaultListModel<>();
+            			while(resultado.next()) 
+            				modelo.addElement(resultado.getString(1));				
+            			listaAtributos.setModel(modelo);
+            		} catch (SQLException e) {
+            			e.printStackTrace();
+            		}
+                    
+                 }
+              }
+           }
+        });
 	}
 	
-	public static void actualizarListas() {	
+	
+	public static void logueoCompleto() {	
         
+        textArea.setText("SELECT *\nFROM multa;");
+		
+		// actualizo lista de tablas
         try {
         	ResultSet resultado = BDD.ejecutarSentencia("SHOW tables;");
 			DefaultListModel modelo = new DefaultListModel<>();
@@ -180,9 +250,21 @@ public class VentanaConsultas extends JInternalFrame {
 			e.printStackTrace();
 		}
         
-        
-        
-        
+
+        // vinculo la tabla con la BDD
+		try {
+			BDD.vincularTabla(tabla);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException ex) {					
+			JOptionPane.showMessageDialog(null,
+                    "No se pudo conectar a la base de datos.\n" + ex.getMessage(),
+                     "Error", JOptionPane.ERROR_MESSAGE);
+	        System.out.println("SQLException: " + ex.getMessage());
+	        System.out.println("SQLState: " + ex.getSQLState());
+	        System.out.println("VendorError: " + ex.getErrorCode());
+		}
         
         
 	}
