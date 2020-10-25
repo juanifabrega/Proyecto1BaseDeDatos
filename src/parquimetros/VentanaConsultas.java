@@ -172,10 +172,9 @@ public class VentanaConsultas extends JInternalFrame {
         
         try {
         	ResultSet resultado = BDD.ejecutarSentencia("SHOW tables;");
-			DefaultListModel modelo = modelo = new DefaultListModel<>();
-			for(int i=1; resultado.next(); i++) {
+			DefaultListModel modelo = new DefaultListModel<>();
+			while(resultado.next()) 
 				modelo.addElement(resultado.getString(1));				
-			}
 			listaTablas.setModel(modelo);
 		} catch (SQLException e) {
 			e.printStackTrace();
