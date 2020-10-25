@@ -46,6 +46,7 @@ public class VentanaPrincipal {
 		
 
         vConsultas = new VentanaConsultas();
+        vConsultas.setVisible(false);
         frame.getContentPane().add(vConsultas);
 
 		

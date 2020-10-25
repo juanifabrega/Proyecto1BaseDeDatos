@@ -17,7 +17,6 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 public class VentanaLoginAdmin extends JDialog {
 
@@ -25,11 +24,9 @@ public class VentanaLoginAdmin extends JDialog {
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JPasswordField passwordField;
-	private boolean logueoExitoso;
 
 
 	public VentanaLoginAdmin() {
-		logueoExitoso = false;
 		setTitle("Admin");
 		setBounds(100, 100, 285, 94);
 		setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
@@ -67,6 +64,7 @@ public class VentanaLoginAdmin extends JDialog {
 								    "Bienvenido",
 								    JOptionPane.INFORMATION_MESSAGE);
 		                    VentanaPrincipal.setVentanaConsulta(true); // cargo ventana consultas
+		                    VentanaConsultas.actualizarListas();
 		                    
 						} catch (SQLException ex) {
 							
@@ -88,27 +86,6 @@ public class VentanaLoginAdmin extends JDialog {
 						
 						
 						
-						/*
-						char [] clave = {'a','d','m','i','n'};
-						if(Arrays.equals(passwordField.getPassword(), clave)) {	
-							dispose();
-							JOptionPane.showMessageDialog(
-								    null, 
-								    "Se ha logueado exitosamente", 
-								    "Bienvenido",
-								    JOptionPane.INFORMATION_MESSAGE);
-		                    dispose();
-		                    VentanaPrincipal.setVentanaConsulta(true);
-						}
-						else {
-							JOptionPane.showMessageDialog(
-								    null, 
-								    "La contraseña es incorrecta.", 
-								    "Error",
-								    JOptionPane.ERROR_MESSAGE);
-							passwordField.setText("");
-						}
-						*/
 					}
 				
 				});
@@ -130,8 +107,4 @@ public class VentanaLoginAdmin extends JDialog {
 		}
 	}
 	
-	public boolean fueLogueado() {
-		return logueoExitoso;
-	}
-
 }

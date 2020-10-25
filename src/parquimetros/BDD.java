@@ -2,7 +2,9 @@ package parquimetros;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class BDD {
@@ -27,21 +29,34 @@ public class BDD {
 		
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		conexion = DriverManager.getConnection(url, usuario, clave);
-		System.out.println("Conexión exitosa a la BDD Parquímetros con usuario "+usuario);			
+		System.out.println("BDD conectada con usuario \""+usuario+"\".");			
 		
 		return conexion;
 	}
 		
 
 	public static void desconectar() throws SQLException {		
-		if (conexion != null)
+		if (conexion != null) {
 			conexion.close();
 			conexion = null;
+			System.out.println("BDD desconectada.");
+		}
+	}
+	
+	
+	public static ResultSet ejecutarSentencia(String sql) throws SQLException {
+		Statement stmt = conexion.createStatement();
+		ResultSet rs = stmt.executeQuery(sql);
+		return rs;
 	}
 	
 	
 	public static Connection getConexion() {		
 		return conexion;		
+	}
+	
+	public static boolean estaConectado() {
+		return conexion != null;
 	}
 	
 }
