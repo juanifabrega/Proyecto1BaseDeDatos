@@ -2,6 +2,7 @@ package parquimetros;
 
 
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
@@ -14,6 +15,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
+
 import javax.swing.JTable;
 import javax.swing.JScrollBar;
 
@@ -25,7 +28,7 @@ public class VentanaConsultas extends JInternalFrame {
 	private JSplitPane splitPane;
 	private JPanel panel;
 	private JTextArea textArea;
-	private JTable table;
+	private JTable tabla;
 	
 
 /*
@@ -107,13 +110,13 @@ public class VentanaConsultas extends JInternalFrame {
         JPanel panelAbajo= new JPanel();
         panel.add(panelAbajo, BorderLayout.CENTER);
         
-        table = new JTable();
-        panelAbajo.add(table);
+        tabla = new JTable();
+        panelAbajo.add(tabla);
+        tabla.setAutoCreateRowSorter(true); // activa el ordenamiento por columnas, para
+        									// que se ordene al hacer click en una columna
         
-        JScrollBar scrollBar = new JScrollBar(table);
-        panelAbajo.add(scrollBar);
-//        JScrollPane sp1 = new JScrollPane(table);
-//        panelAbajo.add(sp);
+        
+        
         
         
         
@@ -124,6 +127,10 @@ public class VentanaConsultas extends JInternalFrame {
 	}
 
 	
+	
+
+	 
+
 	
 	
 	
