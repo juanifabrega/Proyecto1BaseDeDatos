@@ -33,21 +33,11 @@ public class BDD {
 	}
 		
 
-	public static void desconectar() throws SQLException {
-		
+	public static void desconectar() throws SQLException {		
 		if (conexion != null)
 			conexion.close();
 			conexion = null;
-	        	 /*
-	             JOptionPane.showMessageDialog(null,
-	                     "Se produjo un error al intentar desconectarse de la base de datos.\n" + ex.getMessage(),
-	                      "Error", JOptionPane.ERROR_MESSAGE);
-	            System.out.println("SQLException: " + ex.getMessage());
-	            System.out.println("SQLState: " + ex.getSQLState());
-	            System.out.println("VendorError: " + ex.getErrorCode());
-	            */
 	}
-	
 	
 	
 	public static Connection getConexion() {		
