@@ -1,12 +1,9 @@
 package parquimetros;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
 import javax.swing.JOptionPane;
-
 
 
 public class BDD {
@@ -17,7 +14,6 @@ public class BDD {
 	private final String url = "jdbc:mysql://"+ servidor + "/" + baseDeDatos +
 							   "?serverTimezone=America/Argentina/Buenos_Aires";
 	private Connection conexion = null;
-	
 	
 	
 	
@@ -32,7 +28,7 @@ public class BDD {
 		
 		catch(SQLException ex) {
 			
-            JOptionPane.showMessageDialog(null,
+			JOptionPane.showMessageDialog(null,
                     "Se produjo un error al intentar conectarse a la base de datos.\n" + ex.getMessage(),
                      "Error", JOptionPane.ERROR_MESSAGE);
 	        System.out.println("SQLException: " + ex.getMessage());
@@ -66,8 +62,7 @@ public class BDD {
 	            System.out.println("SQLState: " + ex.getSQLState());
 	            System.out.println("VendorError: " + ex.getErrorCode());
 	            
-	         }
-		
+	         }		
 	}
 	
 }
