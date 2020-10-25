@@ -16,34 +16,18 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.Arrays;
 
 public class VentanaLoginAdmin extends JDialog {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private final JPanel contentPanel = new JPanel();
 	private JPasswordField passwordField;
 	private boolean logueoExitoso;
 
-	/**
-	 * Launch the application.
-	 */
-/*	public static void main(String[] args) {
-		try {
-			VentanaLoginAdmin dialog = new VentanaLoginAdmin();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-*/
-	/**
-	 * Create the dialog.
-	 */
+
 	public VentanaLoginAdmin() {
 		logueoExitoso = false;
 		setTitle("Admin");
@@ -72,6 +56,39 @@ public class VentanaLoginAdmin extends JDialog {
 				okButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
+						
+						try {
+							
+							BDD.conectar("admin", new String(passwordField.getPassword()));
+		                    dispose(); // cierro la ventana
+							JOptionPane.showMessageDialog( // muestro ventana de logueo exitoso
+								    null, 
+								    "Se ha logueado exitosamente", 
+								    "Bienvenido",
+								    JOptionPane.INFORMATION_MESSAGE);
+		                    VentanaPrincipal.setVentanaConsulta(true); // cargo ventana consultas
+		                    
+						} catch (SQLException ex) {
+							
+							JOptionPane.showMessageDialog(null,
+				                    "No se pudo conectar a la base de datos.\n" + ex.getMessage(),
+				                     "Error", JOptionPane.ERROR_MESSAGE);
+					        System.out.println("SQLException: " + ex.getMessage());
+					        System.out.println("SQLState: " + ex.getSQLState());
+					        System.out.println("VendorError: " + ex.getErrorCode());
+					        passwordField.setText("");
+					        
+						} catch (ClassNotFoundException ex) {
+							JOptionPane.showMessageDialog(null,
+				                    "No se pudo conectar a la base de datos.\n" + ex.getMessage(),
+				                     "Error", JOptionPane.ERROR_MESSAGE);
+					        System.out.println("ClassNotFoundException: " + ex.getMessage());
+					        passwordField.setText("");
+						}
+						
+						
+						
+						/*
 						char [] clave = {'a','d','m','i','n'};
 						if(Arrays.equals(passwordField.getPassword(), clave)) {	
 							dispose();
@@ -91,8 +108,9 @@ public class VentanaLoginAdmin extends JDialog {
 								    JOptionPane.ERROR_MESSAGE);
 							passwordField.setText("");
 						}
-						
+						*/
 					}
+				
 				});
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);

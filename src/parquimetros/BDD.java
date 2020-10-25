@@ -3,66 +3,55 @@ package parquimetros;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
 
 public class BDD {
 
 	
-	private final String servidor = "localhost:3306";
-	private final String baseDeDatos = "parquimetros";
-	private final String url = "jdbc:mysql://"+ servidor + "/" + baseDeDatos +
-							   "?serverTimezone=America/Argentina/Buenos_Aires";
-	private Connection conexion = null;
+	/*
+	 * Puse todas las variables estáticas, así no hay que estar instanciando a ésta clase.
+	 * Y además aseguramos que no pueda haber más de 1 conexión en simultaneo.
+	 * 
+	 * No se si estará bien hecho así
+	 */
+	
+	private static final String servidor = "localhost:3306";
+	private static final String baseDeDatos = "parquimetros";
+	private static final String url = "jdbc:mysql://"+ servidor + "/" + baseDeDatos;
+							 //  "?serverTimezone=America/Argentina/Buenos_Aires";
+	private static Connection conexion = null;
 	
 	
 	
-	public Connection conectar(String usuario, String clave) {
+	public static Connection conectar(String usuario, String clave) throws SQLException, ClassNotFoundException {
 		
-		try {
-			
-			conexion = DriverManager.getConnection(url, usuario, clave);
-			System.out.println("Conexión exitosa a la BDD Parquímetros con usuario "+usuario);
-			
-		}
-		
-		catch(SQLException ex) {
-			
-			JOptionPane.showMessageDialog(null,
-                    "Se produjo un error al intentar conectarse a la base de datos.\n" + ex.getMessage(),
-                     "Error", JOptionPane.ERROR_MESSAGE);
-	        System.out.println("SQLException: " + ex.getMessage());
-	        System.out.println("SQLState: " + ex.getSQLState());
-	        System.out.println("VendorError: " + ex.getErrorCode());
-	        
-		} 
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		conexion = DriverManager.getConnection(url, usuario, clave);
+		System.out.println("Conexión exitosa a la BDD Parquímetros con usuario "+usuario);			
 		
 		return conexion;
 	}
-	
-	
-	
-	
-
-	public void desconectar() {
 		
-		if (conexion != null) 			
-			try {
-				
-				conexion.close();
-				conexion = null;
-				
-	         }		
-	         catch(SQLException ex){
-	        	 
+
+	public static void desconectar() throws SQLException {
+		
+		if (conexion != null)
+			conexion.close();
+			conexion = null;
+	        	 /*
 	             JOptionPane.showMessageDialog(null,
 	                     "Se produjo un error al intentar desconectarse de la base de datos.\n" + ex.getMessage(),
 	                      "Error", JOptionPane.ERROR_MESSAGE);
 	            System.out.println("SQLException: " + ex.getMessage());
 	            System.out.println("SQLState: " + ex.getSQLState());
 	            System.out.println("VendorError: " + ex.getErrorCode());
-	            
-	         }		
+	            */
+	}
+	
+	
+	
+	public static Connection getConexion() {		
+		return conexion;		
 	}
 	
 }
