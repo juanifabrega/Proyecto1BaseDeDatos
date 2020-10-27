@@ -29,6 +29,7 @@ public class VentanaInspector {
 	 */
 	public VentanaInspector() {
 		initialize();
+		frame.setVisible(true);
 	}
 
 	/**
@@ -36,7 +37,8 @@ public class VentanaInspector {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setEnabled(false);
+		frame.setBounds(100, 100, 853, 521);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
