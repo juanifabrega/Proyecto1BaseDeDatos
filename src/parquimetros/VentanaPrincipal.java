@@ -22,7 +22,7 @@ public class VentanaPrincipal {
 	private JFrame frame;
 	private JMenuBar menu ;
 	private static JMenuItem mntmConsultasDeAdmin;
-	private JMenuItem mntmInspector;
+	private static JMenuItem mntmInspector;
 	private static VentanaConsultas vConsultas;
 	private VentanaLoginAdmin vLoginAdmin;
 
@@ -95,8 +95,7 @@ public class VentanaPrincipal {
                 vLoginAdmin = new VentanaLoginAdmin();
                 vLoginAdmin.setVisible(true);
             }
-        });
-		
+        });		
 	
 		
 		mntmInspector = new JMenuItem("Inspector");
@@ -105,12 +104,14 @@ public class VentanaPrincipal {
 		mntmInspector.addMouseListener(new MouseAdapter() {			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				Color c = mntmConsultasDeAdmin.getBackground();
-				Color newColor = new Color(c.getRed()-40,c.getGreen()-40,c.getBlue()-40);
-				mntmInspector.setBackground(newColor);
-				
-				Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK);
-				mntmInspector.setBorder(borde);				
+				if(mntmConsultasDeAdmin.isEnabled()) {
+					Color c = mntmConsultasDeAdmin.getBackground();
+					Color newColor = new Color(c.getRed()-40,c.getGreen()-40,c.getBlue()-40);
+					mntmInspector.setBackground(newColor);
+					
+					Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK);
+					mntmInspector.setBorder(borde);		
+				}
 			}
 		    @Override
 		    public void mouseExited(MouseEvent e) {
@@ -133,6 +134,7 @@ public class VentanaPrincipal {
 	public static void setVentanaConsulta(boolean b) {
 		vConsultas.setVisible(b);
 		mntmConsultasDeAdmin.setEnabled(!b);
+		mntmInspector.setEnabled(!b);
 	}
 	
 	
