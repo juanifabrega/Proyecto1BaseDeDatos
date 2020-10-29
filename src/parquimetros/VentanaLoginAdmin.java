@@ -63,9 +63,7 @@ public class VentanaLoginAdmin extends JDialog {
 								    null, 
 								    "Se ha logueado exitosamente", 
 								    "Bienvenido",
-								    JOptionPane.INFORMATION_MESSAGE);
-		                    //VentanaPrincipal.setVentanaConsulta(true); // cargo ventana consultas
-		                
+								    JOptionPane.INFORMATION_MESSAGE);		                
 		                    
 						} catch (SQLException ex) {
 							
@@ -84,9 +82,6 @@ public class VentanaLoginAdmin extends JDialog {
 					        System.out.println("ClassNotFoundException: " + ex.getMessage());
 					        passwordField.setText("");
 						}
-						
-						
-						
 					}
 				
 				});

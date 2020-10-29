@@ -58,7 +58,6 @@ public class VentanaConsultas extends JInternalFrame {
 		 		dispose();
 		 		try {
 					bdd.desconectar();
-					//VentanaPrincipal.setVentanaConsulta(false);
 				} catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null,
 		                    "No se pudo desconectar de la base de datos.\n" + ex.getMessage(),
@@ -71,8 +70,6 @@ public class VentanaConsultas extends JInternalFrame {
 		 });
 		 
 		 
-		 
-		//setBounds(100, 100, 776, 480);
 		setBounds(100, 100, 853, 521);
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		
