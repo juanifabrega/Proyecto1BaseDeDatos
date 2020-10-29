@@ -11,44 +11,40 @@ import quick.dbtable.DBTable;
 
 public class BDD {
 
-	
-	/*
-	 * Puse todas las variables estáticas, así no hay que estar instanciando a ésta clase.
-	 * Y además aseguramos que no pueda haber más de 1 conexión en simultaneo.
-	 * 
-	 * No se si estará bien hecho así
-	 */
-	
-	private static final String driver = "com.mysql.cj.jdbc.Driver";
-	private static final String servidor = "localhost:3306";
-	private static final String baseDeDatos = "parquimetros";
-	private static final String url = "jdbc:mysql://"+ servidor + "/" + baseDeDatos +
-							   "?serverTimezone=America/Argentina/Buenos_Aires";
-	private static String usuario;
-	private static String clave;
-	private static Connection conexion = null;
+	private String driver;
+	private String servidor;
+	private String baseDeDatos;
+	private String url;
+	private String usuario;
+	private String clave;
+	private Connection conexion;
 
 	
+	public BDD() {
+		driver = "com.mysql.cj.jdbc.Driver";
+		servidor = "localhost:3306";
+		baseDeDatos = "parquimetros";
+		url = "jdbc:mysql://"+ servidor + "/" + baseDeDatos + "?serverTimezone=America/Argentina/Buenos_Aires";
+		conexion = null;
+	}
 	
 	
-	public static Connection conectar(String user, String password) throws SQLException, ClassNotFoundException {
-		
+	public Connection conectar(String user, String password) throws SQLException, ClassNotFoundException {
+		Class.forName(driver);
 		usuario = user;
 		clave = password;
-		Class.forName(driver);
 		conexion = DriverManager.getConnection(url, usuario, clave);
-		System.out.println("BDD conectada con usuario \""+usuario+"\".");			
-		
+		System.out.println("BDD conectada con usuario \""+usuario+"\".");
 		return conexion;
 	}
 	
 	
-	public static void vincularTabla(DBTable tabla) throws ClassNotFoundException, SQLException {
+	public void vincularTabla(DBTable tabla) throws ClassNotFoundException, SQLException {
 		tabla.connectDatabase(driver, url, usuario, clave);
 	}
 		
 
-	public static void desconectar() throws SQLException {		
+	public void desconectar() throws SQLException {		
 		if (conexion != null) {
 			conexion.close();
 			conexion = null;
@@ -57,18 +53,18 @@ public class BDD {
 	}
 	
 	
-	public static ResultSet ejecutarSentencia(String sql) throws SQLException {
+	public ResultSet ejecutarSentencia(String sql) throws SQLException {
 		Statement stmt = conexion.createStatement();
 		ResultSet rs = stmt.executeQuery(sql);
 		return rs;
 	}
 	
 	
-	public static Connection getConexion() {		
+	public Connection getConexion() {		
 		return conexion;		
 	}
 	
-	public static boolean estaConectado() {
+	public boolean estaConectado() {
 		return conexion != null;
 	}
 	

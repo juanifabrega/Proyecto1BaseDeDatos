@@ -26,7 +26,8 @@ public class VentanaLoginAdmin extends JDialog {
 	private JPasswordField passwordField;
 
 
-	public VentanaLoginAdmin() {
+	public VentanaLoginAdmin(VentanaConsultas vConsultas) {
+		
 		setTitle("Admin");
 		setBounds(100, 100, 285, 94);
 		setLocation((Toolkit.getDefaultToolkit().getScreenSize().width)/2 - getWidth()/2, (Toolkit.getDefaultToolkit().getScreenSize().height)/2 - getHeight()/2);
@@ -55,16 +56,16 @@ public class VentanaLoginAdmin extends JDialog {
 					public void mouseClicked(MouseEvent arg0) {
 						
 						try {
-							
-							BDD.conectar("admin", new String(passwordField.getPassword()));
+							String clave = new String(passwordField.getPassword());
+							vConsultas.loguear(clave);
 		                    dispose(); // cierro la ventana
 							JOptionPane.showMessageDialog( // muestro ventana de logueo exitoso
 								    null, 
 								    "Se ha logueado exitosamente", 
 								    "Bienvenido",
 								    JOptionPane.INFORMATION_MESSAGE);
-		                    VentanaPrincipal.setVentanaConsulta(true); // cargo ventana consultas
-		                    VentanaConsultas.logueoCompleto();
+		                    //VentanaPrincipal.setVentanaConsulta(true); // cargo ventana consultas
+		                
 		                    
 						} catch (SQLException ex) {
 							

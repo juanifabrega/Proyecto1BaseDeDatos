@@ -3,8 +3,9 @@ package parquimetros;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 
-public class VentanaInspector {
+public class VentanaInspector extends JInternalFrame {
 
 	private JFrame frame;
 
@@ -29,7 +30,7 @@ public class VentanaInspector {
 	 */
 	public VentanaInspector() {
 		initialize();
-		frame.setVisible(true);
+		frame.setVisible(false);
 	}
 
 	/**

@@ -18,16 +18,12 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import javax.swing.JTable;
-import javax.swing.JScrollBar;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.table.DefaultTableModel;
 
 import quick.dbtable.DBTable;
 import javax.swing.JList;
@@ -44,20 +40,25 @@ public class VentanaConsultas extends JInternalFrame {
 	private JPanel panelListas;
     private static JList listaTablas;
     private static JList listaAtributos;
+    private BDD bdd;
+    
 	
 	
-	public VentanaConsultas() {
+	public VentanaConsultas(){
 		 super("", false, // resizable
 	               true,  // closable
 	               false, // maximizable
 	               false); // iconifiable
+		 setVisible(false);
+		 bdd = new BDD();
+		 
 		 addInternalFrameListener(new InternalFrameAdapter() {
 		 	@Override
 		 	public void internalFrameClosing(InternalFrameEvent e) {
 		 		dispose();
 		 		try {
-					BDD.desconectar();
-					VentanaPrincipal.setVentanaConsulta(false);
+					bdd.desconectar();
+					//VentanaPrincipal.setVentanaConsulta(false);
 				} catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null,
 		                    "No se pudo desconectar de la base de datos.\n" + ex.getMessage(),
@@ -82,8 +83,6 @@ public class VentanaConsultas extends JInternalFrame {
         
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));	        
         splitPane = new JSplitPane();
-//        splitPane.setDividerLocation(0.6);
-//        splitPane.setResizeWeight(0.6);  
         splitPane.setDividerLocation(getWidth()-200);
         getContentPane().add(splitPane);
         
@@ -127,29 +126,15 @@ public class VentanaConsultas extends JInternalFrame {
         		textArea.setText("");
         	}
         });
-        panel_3.add(btnBorrar);
-        
-        //JScrollPane scrollPane = new JScrollPane();
-        //panel.add(scrollPane, BorderLayout.CENTER);
-        
-
-        
+        panel_3.add(btnBorrar);  
         
         JPanel panelAbajo= new JPanel();
         panelAbajo.setLayout(new BorderLayout(0,0));
-        panel.add(panelAbajo, BorderLayout.CENTER);
-        
+        panel.add(panelAbajo, BorderLayout.CENTER);        
 
-    	// crea la tabla  
-    	tabla = new DBTable();
-    	
-    	// Agrega la tabla al frame (no necesita JScrollPane como Jtable)
-        //panelAbajo.add(tabla, BorderLayout.CENTER);
-    	panelAbajo.add(tabla);
-                  
-        // setea la tabla para sólo lectura (no se puede editar su contenido)  
-        tabla.setEditable(false);  
-        
+    	tabla = new DBTable();    	
+    	panelAbajo.add(tabla);                   
+        tabla.setEditable(false);          
         mostrarListas();
 	}
 	
@@ -219,7 +204,7 @@ public class VentanaConsultas extends JInternalFrame {
                  if (index >= 0) {
                     String item = target.getModel().getElementAt(index).toString();                    
                     try {
-                    	ResultSet resultado = BDD.ejecutarSentencia("DESCRIBE " + item + ";");
+                    	ResultSet resultado = bdd.ejecutarSentencia("DESCRIBE " + item + ";");
             			DefaultListModel modelo = new DefaultListModel<>();
             			while(resultado.next()) 
             				modelo.addElement(resultado.getString(1));				
@@ -235,13 +220,15 @@ public class VentanaConsultas extends JInternalFrame {
 	}
 	
 	
-	public static void logueoCompleto() {	
+	public void loguear(String clave) throws ClassNotFoundException, SQLException {	
         
+		bdd.conectar("admin",clave);	
+		
         textArea.setText("SELECT *\nFROM multa;");
 		
 		// actualizo lista de tablas
         try {
-        	ResultSet resultado = BDD.ejecutarSentencia("SHOW tables;");
+        	ResultSet resultado = bdd.ejecutarSentencia("SHOW tables;");
 			DefaultListModel modelo = new DefaultListModel<>();
 			while(resultado.next()) 
 				modelo.addElement(resultado.getString(1));				
@@ -253,9 +240,8 @@ public class VentanaConsultas extends JInternalFrame {
 
         // vinculo la tabla con la BDD
 		try {
-			BDD.vincularTabla(tabla);
+			bdd.vincularTabla(tabla);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException ex) {					
 			JOptionPane.showMessageDialog(null,
@@ -266,7 +252,7 @@ public class VentanaConsultas extends JInternalFrame {
 	        System.out.println("VendorError: " + ex.getErrorCode());
 		}
         
-        
+        setVisible(true);
 	}
 	
 }

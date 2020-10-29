@@ -14,18 +14,21 @@ import java.awt.Color;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 public class VentanaPrincipal {
 
 	private JFrame frame;
 	private JMenuBar menu ;
-	private static JMenuItem mntmConsultasDeAdmin;
-	private static JMenuItem mntmInspector;
-	private static VentanaConsultas vConsultas;
-	private VentanaLoginAdmin vLoginAdmin;
-
+	private static JMenuItem botonAdmin;
+	private static JMenuItem botonInspector;
+	private VentanaConsultas ventanaConsultas;
+	private VentanaLoginAdmin ventanaLoginAdmin;
+	private VentanaInspector ventanaInspector;
 	
 	
 	public static void main(String[] args) {
@@ -43,14 +46,14 @@ public class VentanaPrincipal {
 
 	public VentanaPrincipal() {
 		initialize();
-		
 
-        vConsultas = new VentanaConsultas();
-        vConsultas.setVisible(false);
-        frame.getContentPane().add(vConsultas);
-
+        ventanaConsultas = new VentanaConsultas();
+        frame.getContentPane().add(ventanaConsultas);
 		
+        ventanaInspector = new VentanaInspector();
 	}
+	
+	
 
 	private void initialize() {
 		frame = new JFrame("Parquímetros");
@@ -62,79 +65,93 @@ public class VentanaPrincipal {
 		menu = new JMenuBar();
 		frame.setJMenuBar(menu);
 		
-		mntmConsultasDeAdmin = new JMenuItem("Admin");
+		botonAdmin = new JMenuItem("Admin");
 		Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.DARK_GRAY);
-		mntmConsultasDeAdmin.setBorder(borde);
-		mntmConsultasDeAdmin.setAlignmentY(SwingConstants.CENTER);
-		menu.add(mntmConsultasDeAdmin);
-		mntmConsultasDeAdmin.addMouseListener(new MouseAdapter() {			
+		botonAdmin.setBorder(borde);
+		botonAdmin.setAlignmentY(SwingConstants.CENTER);
+		menu.add(botonAdmin);
+		botonAdmin.addMouseListener(new MouseAdapter() {			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				if(mntmConsultasDeAdmin.isEnabled()) {
-					Color c = mntmConsultasDeAdmin.getBackground();
+				if(botonAdmin.isEnabled()) {
+					Color c = botonAdmin.getBackground();
 					Color newColor = new Color(c.getRed()-40,c.getGreen()-40,c.getBlue()-40);
-					mntmConsultasDeAdmin.setBackground(newColor);
+					botonAdmin.setBackground(newColor);
 					
 					Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK);
-					mntmConsultasDeAdmin.setBorder(borde);				
+					botonAdmin.setBorder(borde);				
 				}
 			}
 		    @Override
 		    public void mouseExited(MouseEvent e) {
-				if(mntmConsultasDeAdmin.isEnabled()) {
-			        mntmConsultasDeAdmin.setBackground(null);
+				if(botonAdmin.isEnabled()) {
+			        botonAdmin.setBackground(null);
 					Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.DARK_GRAY);
-					mntmConsultasDeAdmin.setBorder(borde);
+					botonAdmin.setBorder(borde);
 				}
 		    }
 			
 		});		
 		
-		mntmConsultasDeAdmin.addActionListener(new ActionListener() {
+		botonAdmin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                vLoginAdmin = new VentanaLoginAdmin();
-                vLoginAdmin.setVisible(true);
+            	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible())
+        			JOptionPane.showMessageDialog(null,
+                            "Ya hay una conexión activa.\nCierre para iniciar otra..",
+                             "Error", JOptionPane.ERROR_MESSAGE);
+            	else {
+            		ventanaLoginAdmin = new VentanaLoginAdmin(ventanaConsultas);
+            	    ventanaLoginAdmin.setVisible(true);
+            	}
             }
         });		
 	
 		
-		mntmInspector = new JMenuItem("Inspector");
-		mntmInspector.setBorder(borde);
-		menu.add(mntmInspector);
-		mntmInspector.addMouseListener(new MouseAdapter() {			
+		botonInspector = new JMenuItem("Inspector");
+		botonInspector.setBorder(borde);
+		menu.add(botonInspector);
+		botonInspector.addMouseListener(new MouseAdapter() {			
 			@Override
 			public void mouseEntered(MouseEvent arg0) {
-				if(mntmConsultasDeAdmin.isEnabled()) {
-					Color c = mntmConsultasDeAdmin.getBackground();
+				if(botonAdmin.isEnabled()) {
+					Color c = botonAdmin.getBackground();
 					Color newColor = new Color(c.getRed()-40,c.getGreen()-40,c.getBlue()-40);
-					mntmInspector.setBackground(newColor);
+					botonInspector.setBackground(newColor);
 					
 					Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK);
-					mntmInspector.setBorder(borde);		
+					botonInspector.setBorder(borde);		
 				}
 			}
 		    @Override
 		    public void mouseExited(MouseEvent e) {
-		        mntmInspector.setBackground(null);
+		        botonInspector.setBackground(null);
 				Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.DARK_GRAY);
-				mntmInspector.setBorder(borde);
+				botonInspector.setBorder(borde);
 		    }
 			
 		});			
 		
 		
-		mntmInspector.addActionListener(new ActionListener() {
+		botonInspector.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                System.out.println("se abre ventana de inspector");
+            	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible())
+        			JOptionPane.showMessageDialog(null,
+                            "Ya hay una conexión activa.\nCierre para iniciar otra..",
+                             "Error", JOptionPane.ERROR_MESSAGE);
+            	else {
+                    System.out.println("se abre ventana de inspector");            		
+            	}
              }
         });
 	}
 	
 	
-	public static void setVentanaConsulta(boolean b) {
-		vConsultas.setVisible(b);
-		mntmConsultasDeAdmin.setEnabled(!b);
-		mntmInspector.setEnabled(!b);
+	public void mostrarVentanaConsulta(boolean b) {
+		
+		
+		ventanaConsultas.setVisible(b);
+		botonAdmin.setEnabled(!b);
+		botonInspector.setEnabled(!b);
 	}
 	
 	
