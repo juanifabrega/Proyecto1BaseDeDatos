@@ -144,15 +144,5 @@ public class VentanaPrincipal {
              }
         });
 	}
-	
-	
-	public void mostrarVentanaConsulta(boolean b) {
 		
-		
-		ventanaConsultas.setVisible(b);
-		botonAdmin.setEnabled(!b);
-		botonInspector.setEnabled(!b);
-	}
-	
-	
 }
