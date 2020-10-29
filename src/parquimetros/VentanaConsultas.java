@@ -36,7 +36,7 @@ public class VentanaConsultas extends JInternalFrame {
 	private JSplitPane splitPane;
 	private JPanel panel;
 	private static JTextArea textArea;
-	private static DBTable tabla;
+	private DBTable tabla;
 	private JPanel panelListas;
     private static JList listaTablas;
     private static JList listaAtributos;
@@ -75,7 +75,6 @@ public class VentanaConsultas extends JInternalFrame {
 		
 		
 
-        setVisible(false);
         setLocation(0, -12);
         
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));	        
