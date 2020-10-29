@@ -64,5 +64,6 @@ public class VentanaInspector extends JInternalFrame {
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         
 	}
+	//COMENTARIO JUANI 
 
 }
