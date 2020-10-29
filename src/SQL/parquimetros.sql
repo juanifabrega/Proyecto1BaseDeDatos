@@ -180,6 +180,10 @@ GRANT ALL PRIVILEGES ON parquimetros.* TO 'admin'@'localhost' WITH GRANT OPTION;
 #creacion del usuario venta
 CREATE USER 'venta'@'%' IDENTIFIED BY 'venta';
 GRANT INSERT ON parquimetros.tarjetas TO 'venta'@'%';
+GRANT SELECT ON parquimetros.tarjetas TO 'venta'@'%';
+GRANT SELECT ON parquimetros.automoviles TO 'venta'@'%';
+GRANT SELECT ON parquimetros.tipos_tarjeta TO 'venta'@'%';
+
 
 #creacion del usuario inspector
 CREATE USER 'inspector'@'%' IDENTIFIED BY 'inspector';
@@ -188,3 +192,4 @@ GRANT INSERT ON parquimetros.multa TO 'inspector'@'%';
 GRANT SELECT ON parquimetros.estacionados TO 'inspector'@'%';
 GRANT INSERT ON parquimetros.accede TO 'inspector'@'%';
 GRANT SELECT ON parquimetros.parquimetros TO 'inspector'@'%';
+GRANT SELECT ON parquimetros.asociado_con TO 'inspector'@'%';
