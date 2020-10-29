@@ -51,6 +51,7 @@ public class VentanaPrincipal {
         frame.getContentPane().add(ventanaConsultas);
 		
         ventanaInspector = new VentanaInspector();
+        ventanaInspector.setVisible(false);
 	}
 	
 	
