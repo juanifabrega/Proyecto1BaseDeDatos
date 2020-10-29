@@ -38,7 +38,7 @@ public class VentanaLoginAdmin extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		{
-			JLabel lblContrasenia = new JLabel("ContraseÃ±a  ");
+			JLabel lblContrasenia = new JLabel("Contraseña  ");
 			contentPanel.add(lblContrasenia, BorderLayout.WEST);
 		}
 		{

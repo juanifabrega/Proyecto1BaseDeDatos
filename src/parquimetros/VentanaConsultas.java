@@ -138,7 +138,7 @@ public class VentanaConsultas extends JInternalFrame {
 
 	   private void actualizarTabla() {
 	      try {    
-	    	 // seteamos la consulta a partir de la cual se obtendr√°n los datos para llenar la tabla
+	    	 // seteamos la consulta a partir de la cual se obtendr·n los datos para llenar la tabla
 	    	 tabla.setSelectSql(textArea.getText().trim());
 
 	    	  // obtenemos el modelo de la tabla a partir de la consulta para 

@@ -3,22 +3,17 @@ package parquimetros;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
-
-
-import java.awt.Color;
-
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 
 public class VentanaPrincipal {
 
@@ -57,7 +52,7 @@ public class VentanaPrincipal {
 	
 
 	private void initialize() {
-		frame = new JFrame("ParquÃ­metros");
+		frame = new JFrame("Parquímetros");
 		frame.setBounds(100, 100, 853, 521);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
@@ -98,7 +93,7 @@ public class VentanaPrincipal {
             public void actionPerformed(ActionEvent evt) {
             	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible())
         			JOptionPane.showMessageDialog(null,
-                            "Ya hay una conexiÃ³n activa.\nCierre para iniciar otra..",
+                            "Ya hay una conexión activa.\nCierre para iniciar otra..",
                              "Error", JOptionPane.ERROR_MESSAGE);
             	else {
             		ventanaLoginAdmin = new VentanaLoginAdmin(ventanaConsultas);
@@ -137,7 +132,7 @@ public class VentanaPrincipal {
             public void actionPerformed(ActionEvent evt) {
             	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible())
         			JOptionPane.showMessageDialog(null,
-                            "Ya hay una conexiÃ³n activa.\nCierre para iniciar otra..",
+                            "Ya hay una conexión activa.\nCierre para iniciar otra..",
                              "Error", JOptionPane.ERROR_MESSAGE);
             	else {
                     System.out.println("se abre ventana de inspector");            		
