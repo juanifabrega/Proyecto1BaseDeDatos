@@ -134,9 +134,7 @@ public class VentanaLoginInspector extends JDialog {
 										    null, 
 										    "Se ha logueado exitosamente", 
 										    "Bienvenido",
-										    JOptionPane.INFORMATION_MESSAGE);
-	
-									
+										    JOptionPane.INFORMATION_MESSAGE);									
 								} else {
 									JOptionPane.showMessageDialog(null,
 								            "Los datos no son correctos.\n",

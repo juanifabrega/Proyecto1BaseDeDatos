@@ -107,12 +107,8 @@ public class VentanaInspector extends JInternalFrame {
         			letra=palabra.charAt(i);
         			altura=calle+String.valueOf(letra);
         			i++;
-        		} 		
-        		      			   
-        		
-        		
-        			
-        	        		
+        		}
+        		actualizarCombobox2(calle,altura);       	        		
         	}
         });
         panel.add(comboBox);
@@ -126,7 +122,21 @@ public class VentanaInspector extends JInternalFrame {
         
 	}
 	
-
+	private void actualizarCombobox2(String calle, String altura){
+		String sql="SELECT id_parq " +
+				   "FROM parquimetros " +
+				   "WHERE calle=" + calle + " AND altura=" + altura + ";" ;
+		try {
+			ResultSet rs = bdd.ejecutarSentencia(sql);
+			while(rs.next()) {
+				comboBox_1.addItem(rs.getString("id_parq"));
+			}
+			bdd.limpiarSentencia();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private void actualizarComboBox() {
 		String sql = "SELECT calle, altura " +
 					 "FROM asociado_con " +
