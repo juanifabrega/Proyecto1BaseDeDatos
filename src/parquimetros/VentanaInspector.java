@@ -140,7 +140,7 @@ public class VentanaInspector extends JInternalFrame {
 	}
 	
 	private void actualizarComboBox() {
-		String sql = "SELECT calle, altura " +
+		String sql = "SELECT DISTINCT calle, altura " +
 					 "FROM asociado_con;";
 		try {
 			ResultSet rs = bdd.ejecutarSentencia(sql);
