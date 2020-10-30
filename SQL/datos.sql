@@ -1,90 +1,3 @@
-USE parquimetros;
-
-#-----------------------------------------------------------------------------------------------
-#Insercion en conductores
-
-INSERT INTO conductores(dni,nombre,apellido,direccion,telefono,registro)
-VALUES (57387404,'Lucas','Pratto','Bernabeu 912','9122018',1);
-
-INSERT INTO conductores(dni,nombre,apellido,direccion,telefono,registro)
-VALUES (96385214,'Juan','Quintero','Nuniez 129','2018129',2);
-
-INSERT INTO conductores(dni,nombre,apellido,direccion,telefono,registro)
-VALUES (12345678,'Gonzalo','Martinez','Alfaro 9','1292018',3);
-
-INSERT INTO conductores(dni,nombre,apellido,direccion,telefono,registro)
-VALUES (14785296,'Diego','Maradona','Mexico 86','4553366',4);
-
-INSERT INTO conductores(dni,nombre,apellido,direccion,telefono,registro)
-VALUES (87654321,'Lionel','Messi','Barcelona 2020','4516200',5);
-
-#-----------------------------------------------------------------------------------------------
-#Insercion en automoviles
-
-INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('ABC123','Wolkswagen','Gol','Blanco',57387404);
-
-INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('TDA987','Chevrolet','Corsa','Rojo',96385214);
-
-INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('BSD114','Fiat','Palio','Rojo',12345678);
-
-INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('D10S10','Lamborghinni','Aventador','Naranja',14785296);
-
-INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('AMB-10','Reanult','Sandero','Gris',87654321);
-
-#-----------------------------------------------------------------------------------------------
-#Insercion en tipo_tarjetas
-
-INSERT INTO tipos_tarjeta(tipo,descuento)
-VALUES ('Basica','0.01');
-
-INSERT INTO tipos_tarjeta(tipo,descuento)
-VALUES ('Premium','0.47');
-
-#-----------------------------------------------------------------------------------------------
-#Insercion en tarjetas
-
-INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(1,100.50,'Basica','ABC123');
-
-INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(2,70.26,'Basica','TDA987');
-
-INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(3,95.99,'Basica','BSD114');
-
-INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(4,999.99,'Premium','D10S10');
-
-INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(5,999.99,'Premium','AMB-10');
-
-#-----------------------------------------------------------------------------------------------
-#Insercion en inspectores
-
-INSERT INTO inspectores(legajo,dni,nombre,apellido,password)
-VALUES (4444,3571590,'Juan','Perez',md5('pepitoclavounclavito'));
-
-INSERT INTO inspectores(legajo,dni,nombre,apellido,password)
-VALUES (333,7539510,'Nahuel','Rodriguez',md5('pepeargento2020'));
-
-#-----------------------------------------------------------------------------------------------
-#Insercion en ubicaciones
-
-INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Estomba','1200',1.47);
-
-INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Belgrano','300',5.75);
-
-INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Alsina','100',8.38);
-
-INSERT INTO ubicaciones(calle,altura,tarifa)
 VALUES ('Rincon','100',80.38);
 
 #-----------------------------------------------------------------------------------------------
@@ -107,6 +20,9 @@ VALUES (5,5,'Rincon','100');
 
 INSERT INTO parquimetros(id_parq,numero,calle,altura)
 VALUES (6,6,'Rincon','100');
+
+INSERT INTO parquimetros(id_parq,numero,calle,altura)
+VALUES (7,7,'Rincon','100');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en estacionamientos
