@@ -116,10 +116,73 @@ public class VentanaInspector extends JInternalFrame {
         comboBox_2 = new JComboBox();
         panel.add(comboBox_2);
         
-        
-        
-        
 	}
+	
+	
+
+	public void registrarAcceso(int id_parq) {
+		String sql = "INSERT INTO accede(legajo,id_parq,fecha,hora) " +
+					 "VALUES (" + legajo + ","+ id_parq +",CURDATE(),CURTIME());";		
+		try {
+			bdd.ejecutarModificacion(sql);
+			bdd.limpiarSentencia();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}	
+	
+	public boolean controlarUbicacion(String calle, int altura) {
+		boolean controlSuperado = false;
+		try {
+			
+			String sql_dia = "SELECT DAYOFWEEK(CURDATE()) dia;";
+			ResultSet rs1 = bdd.ejecutarSentencia(sql_dia);
+			rs1.next();
+			int diaInt = rs1.getInt("dia");
+			bdd.limpiarSentencia();
+			String dia = "";
+			switch(diaInt) {
+				case 1: dia = "do"; break;
+				case 2: dia = "lu"; break;
+				case 3: dia = "ma"; break;
+				case 4: dia = "mi"; break;
+				case 5: dia = "ju"; break;
+				case 6: dia = "vi"; break;
+				case 7: dia = "sa"; break;				
+			}				
+			
+			String sql_turno = "SELECT (CURTIME()>'08:00:00' AND CURTIME()<'13:59:00') turno_M,"
+									+ "(CURTIME()>'14:00:00' AND CURTIME()<'20:00:00') turno_T;";
+			ResultSet rs2 = bdd.ejecutarSentencia(sql_turno);
+			rs2.next();
+			int turno_m = rs2.getInt("turno_M");
+			int turno_t = rs2.getInt("turno_T");
+			bdd.limpiarSentencia();
+			String turno = "";
+			if(turno_m==1)
+				turno = "M";
+			else
+				if(turno_t==1)
+					turno = "T";						
+			
+			String sql = "SELECT legajo, calle, altura, dia, turno " +
+						 "FROM asociado_con " +
+						 "WHERE legajo=" + legajo + " AND " +
+						 		"calle='" + calle + "' AND " +
+						 		"altura=" + altura + " AND " +
+						 		"dia='"+ dia + "' AND " +
+						 		"turno='"+ turno +"';";
+			ResultSet rs3 = bdd.ejecutarSentencia(sql);
+			controlSuperado = rs3.next();
+			bdd.limpiarSentencia();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return controlSuperado;
+	}
+	
+	
+	
 	
 	private void actualizarComboBox() {
 		String sql = "SELECT calle " +
@@ -154,7 +217,6 @@ public class VentanaInspector extends JInternalFrame {
 	}
 	
 	private void actualizarCombobox2(String calle, String altura){
-		System.out.println(calle+altura);
 		String sql="SELECT id_parq " +
 				   "FROM parquimetros " +
 				   "WHERE calle='" + calle + "' AND altura=" + altura + ";" ;
