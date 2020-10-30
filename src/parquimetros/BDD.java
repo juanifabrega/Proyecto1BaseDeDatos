@@ -69,7 +69,11 @@ public class BDD {
 	public void ejecutarModificacion(String sql) throws SQLException {
 		stmt = conexion.createStatement();
 		stmt.executeUpdate(sql);		
-	}	
+	}
+	
+	public void limpiarModificacion() throws SQLException{
+		stmt.close();
+	}
 	
 	public Connection getConexion() {		
 		return conexion;		
