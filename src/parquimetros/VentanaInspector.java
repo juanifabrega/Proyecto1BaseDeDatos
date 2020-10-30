@@ -181,6 +181,21 @@ public class VentanaInspector extends JInternalFrame {
 		return controlSuperado;
 	}
 	
+	public void generarMulta(){
+		String calle=(String) comboBox.getItemAt(comboBox.getSelectedIndex());
+		String altura=(String) comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
+		int alturaa= Integer.parseInt(altura);
+		if (controlarUbicacion(calle,alturaa)){
+			String idparq=(String) comboBox_2.getItemAt(comboBox_2.getSelectedIndex());
+			int idpark=Integer.parseInt(idparq);
+			registrarAcceso(idpark);
+			//generarMultas();
+		}
+		else{
+			JOptionPane.showMessageDialog(null,"El inspector no esta autorizado a labrar multas en esta ubicacion.\n","Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
 	
 	
 	
