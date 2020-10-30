@@ -18,7 +18,9 @@ public class BDD {
 	private String usuario;
 	private String clave;
 	private Connection conexion;
-
+	private Statement stmt;
+	private ResultSet rs;
+	
 	
 	public BDD() {
 		driver = "com.mysql.cj.jdbc.Driver";
@@ -54,9 +56,14 @@ public class BDD {
 	
 	
 	public ResultSet ejecutarSentencia(String sql) throws SQLException {
-		Statement stmt = conexion.createStatement();
-		ResultSet rs = stmt.executeQuery(sql);
+		stmt = conexion.createStatement();
+		rs = stmt.executeQuery(sql);
 		return rs;
+	}
+	
+	public void limpiarSentencia() throws SQLException {
+		stmt.close();
+		rs.close();
 	}
 	
 	

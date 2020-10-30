@@ -17,6 +17,9 @@ import quick.dbtable.DBTable;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import javax.swing.JComboBox;
 
 public class VentanaInspector extends JInternalFrame {
 
@@ -25,6 +28,9 @@ public class VentanaInspector extends JInternalFrame {
 	private BDD bdd;
 	private DBTable tabla;
 	private LinkedList<String> listaPatentes;
+	private JPanel panel;
+	private static JComboBox comboBox;
+	private int legajo;
 	
 	
 	public VentanaInspector() {
@@ -34,6 +40,15 @@ public class VentanaInspector extends JInternalFrame {
 	               false); // iconifiable
 		 setVisible(false);
 		 bdd = new BDD();
+		 try {
+			bdd.conectar("inspector", "inspector");
+		} catch (ClassNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		 listaPatentes = new LinkedList<String>();
 		 
 		 addInternalFrameListener(new InternalFrameAdapter() {
@@ -56,7 +71,6 @@ public class VentanaInspector extends JInternalFrame {
 		setBounds(100, 100, 853, 521);
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         setLocation(0, -12);
-        getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         
         JButton btnAgregarPatente = new JButton("Agregar patente");
         btnAgregarPatente.addMouseListener(new MouseAdapter() {
@@ -66,28 +80,59 @@ public class VentanaInspector extends JInternalFrame {
         	    System.out.println("Patente agregada: " + listaPatentes.getLast());        		
         	}
         });
-        getContentPane().add(btnAgregarPatente);
+        getContentPane().setLayout(new BorderLayout(0, 0));
+        getContentPane().add(btnAgregarPatente, BorderLayout.NORTH);
+        
+        panel = new JPanel();
+        getContentPane().add(panel, BorderLayout.CENTER);
+        
+        comboBox = new JComboBox();
+        panel.add(comboBox);
+        
+        
+        
         
 	}
 	
 
-	public boolean loguear(int legajo, String clave) throws SQLException, ClassNotFoundException {
-		boolean exito;			
+	private void actualizarComboBox() {
+		String sql = "SELECT calle, altura " +
+					 "FROM asociado_con " +
+					 "WHERE legajo=" + legajo + ";";
+		try {
+			ResultSet rs = bdd.ejecutarSentencia(sql);
+			System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
+			while(rs.next()) {
+				System.out.println(rs.getString(1)+" "+rs.getString(2));
+				comboBox.addItem(rs.getString("calle")+" "+rs.getString("altura"));
+			}
+			bdd.limpiarSentencia();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+
+
+	public boolean loguear(int leg, String clave) throws SQLException, ClassNotFoundException {
+		boolean exito;	
+		legajo = leg;
 		bdd.conectar("inspector", "inspector");	
 		
 		String consultaSql = "SELECT legajo, password " +
 				"FROM inspectores " +
-				"WHERE legajo="+legajo+" AND " +
-				"password=md5('"+clave+"');";
+				"WHERE legajo=" + leg + " AND " +
+				"password=md5('" + clave + "');";
 		
 		ResultSet rs = bdd.ejecutarSentencia(consultaSql);
-		exito = rs.next();
+		exito = rs.next();		
+		bdd.limpiarSentencia();
 		
 		try { // ésto es para mostrar la ventana cuando los datos son correctos
 	    	if(exito) {
 	    		System.out.println("aparece ventana");
 	    		setVisible(true);
 	    		setMaximum(true);
+	            actualizarComboBox();
 	    	}
 		} catch (PropertyVetoException e) {
 			e.printStackTrace();

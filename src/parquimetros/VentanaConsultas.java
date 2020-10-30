@@ -203,6 +203,7 @@ public class VentanaConsultas extends JInternalFrame {
             			while(resultado.next()) 
             				modelo.addElement(resultado.getString(1));				
             			listaAtributos.setModel(modelo);
+            			bdd.limpiarSentencia();
             		} catch (SQLException e) {
             			e.printStackTrace();
             		}
@@ -227,6 +228,7 @@ public class VentanaConsultas extends JInternalFrame {
 			while(resultado.next()) 
 				modelo.addElement(resultado.getString(1));				
 			listaTablas.setModel(modelo);
+			bdd.limpiarSentencia();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
