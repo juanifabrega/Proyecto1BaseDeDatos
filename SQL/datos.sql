@@ -99,6 +99,9 @@ VALUES (2,2,'Belgrano','300');
 INSERT INTO parquimetros(id_parq,numero,calle,altura)
 VALUES (3,3,'Alsina','100');
 
+INSERT INTO parquimetros(id_parq,numero,calle,altura)
+VALUES (4,4,'Estomba','1200');
+
 #-----------------------------------------------------------------------------------------------
 #Insercion en estacionamientos
 
@@ -136,6 +139,9 @@ VALUES (3,333,'Alsina','100','ma','M');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
 VALUES (4,333,'Rincon','100','ma','T');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (1,4444,'Estomba','1200','lu','T');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en multas
