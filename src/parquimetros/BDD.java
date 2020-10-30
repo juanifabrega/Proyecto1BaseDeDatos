@@ -66,6 +66,10 @@ public class BDD {
 		rs.close();
 	}
 	
+	public void ejecutarModificacion(String sql) throws SQLException {
+		stmt = conexion.createStatement();
+		stmt.executeUpdate(sql);		
+	}	
 	
 	public Connection getConexion() {		
 		return conexion;		

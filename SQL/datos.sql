@@ -134,20 +134,56 @@ VALUES (333,2,CURDATE(),CURTIME());
 #-----------------------------------------------------------------------------------------------
 #Insercion en asociado_con
 
+# Legajo 4444
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (1,4444,'Estomba','1200','lu','M');
+VALUES (1,4444,'Belgrano','300','lu','M');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (2,4444,'Belgrano','300','lu','T');
+VALUES (2,4444,'Belgrano','300','ma','M');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (3,333,'Alsina','100','ma','M');
+VALUES (3,4444,'Belgrano','300','mi','M');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (4,333,'Rincon','100','ma','T');
+VALUES (4,4444,'Belgrano','300','ju','M');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (5,4444,'Estomba','1200','lu','T');
+VALUES (5,4444,'Belgrano','300','vi','M');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (6,4444,'Belgrano','300','sa','M');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (7,4444,'Belgrano','300','do','M');
+
+# Legajo 333
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (8,333,'Estomba','1200','lu','T');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (9,333,'Estomba','1200','ma','T');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (10,333,'Estomba','1200','mi','T');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (11,333,'Estomba','1200','ju','T');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (12,333,'Estomba','1200','vi','T');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (13,333,'Estomba','1200','sa','T');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (14,333,'Estomba','1200','do','T');
+
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (15,333,'Alsina','100','lu','M');
+
+INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
+VALUES (16,333,'Rincon','100','ma','M');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en multas
