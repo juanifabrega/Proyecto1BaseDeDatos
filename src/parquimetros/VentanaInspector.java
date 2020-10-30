@@ -20,6 +20,8 @@ import java.awt.event.MouseEvent;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class VentanaInspector extends JInternalFrame {
 
@@ -31,6 +33,7 @@ public class VentanaInspector extends JInternalFrame {
 	private JPanel panel;
 	private static JComboBox comboBox;
 	private int legajo;
+	private JComboBox comboBox_1;
 	
 	
 	public VentanaInspector() {
@@ -87,7 +90,36 @@ public class VentanaInspector extends JInternalFrame {
         getContentPane().add(panel, BorderLayout.CENTER);
         
         comboBox = new JComboBox();
+        comboBox.addItemListener(new ItemListener() {
+        	public void itemStateChanged(ItemEvent e) {
+        		String palabra=(String) comboBox.getItemAt(comboBox.getSelectedIndex());  
+        		String calle="";
+        		String altura="";
+        		char letra;
+        		int i=0;
+        		while(i<palabra.length() && palabra.charAt(i)!=' ' ) {
+        			letra=palabra.charAt(i);
+        			calle=calle+String.valueOf(letra);
+        			i++;
+        		}
+        		i++;
+        		while(i<palabra.length()) {
+        			letra=palabra.charAt(i);
+        			altura=calle+String.valueOf(letra);
+        			i++;
+        		} 		
+        		      			   
+        		
+        		
+        			
+        	        		
+        	}
+        });
         panel.add(comboBox);
+        
+        
+        comboBox_1 = new JComboBox();
+        panel.add(comboBox_1);
         
         
         
