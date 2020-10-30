@@ -21,9 +21,6 @@ VALUES (5,5,'Rincon','100');
 INSERT INTO parquimetros(id_parq,numero,calle,altura)
 VALUES (6,6,'Rincon','100');
 
-INSERT INTO parquimetros(id_parq,numero,calle,altura)
-VALUES (7,7,'Rincon','100');
-
 #-----------------------------------------------------------------------------------------------
 #Insercion en estacionamientos
 
