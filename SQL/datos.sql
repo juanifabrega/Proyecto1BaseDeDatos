@@ -102,6 +102,12 @@ VALUES (3,3,'Alsina','100');
 INSERT INTO parquimetros(id_parq,numero,calle,altura)
 VALUES (4,4,'Estomba','1200');
 
+INSERT INTO parquimetros(id_parq,numero,calle,altura)
+VALUES (5,5,'Rincon','100');
+
+INSERT INTO parquimetros(id_parq,numero,calle,altura)
+VALUES (6,6,'Rincon','100');
+
 #-----------------------------------------------------------------------------------------------
 #Insercion en estacionamientos
 
