@@ -12,6 +12,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -21,6 +23,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -111,18 +114,47 @@ public class VentanaLoginInspector extends JDialog {
 						
 						int legajo = Integer.parseInt(textField.getText());
 						String clave = new String(passwordField.getPassword());
-						if(ventanaInspector.loguear(legajo, clave)) {
-		                    dispose(); 
-							JOptionPane.showMessageDialog( 
-								    null, 
-								    "Se ha logueado exitosamente", 
-								    "Bienvenido",
-								    JOptionPane.INFORMATION_MESSAGE);
-							
-						} else {
+						try {
+							if(ventanaInspector.loguear(legajo, clave)) {
+								textField.setText("");
+							    passwordField.setText("");
+							    dispose(); 
+								JOptionPane.showMessageDialog( 
+									    null, 
+									    "Se ha logueado exitosamente", 
+									    "Bienvenido",
+									    JOptionPane.INFORMATION_MESSAGE);
+
+								
+							} else {
+								JOptionPane.showMessageDialog(null,
+							            "Los datos no son correctos.\n",
+							             "Error", JOptionPane.ERROR_MESSAGE);
+								textField.setText("");
+							    passwordField.setText("");
+							}
+						} catch (HeadlessException ex) {							
 							JOptionPane.showMessageDialog(null,
-				                    "Los datos no son correctos.\n",
+				                    "No se pudo conectar a la base de datos.\n" + ex.getMessage(),
 				                     "Error", JOptionPane.ERROR_MESSAGE);
+					        System.out.println("Exception: " + ex.getMessage());
+							textField.setText("");
+					        passwordField.setText("");
+						} catch (SQLException ex) {							
+							JOptionPane.showMessageDialog(null,
+				                    "No se pudo conectar a la base de datos.\n" + ex.getMessage(),
+				                     "Error", JOptionPane.ERROR_MESSAGE);
+					        System.out.println("SQLException: " + ex.getMessage());
+					        System.out.println("SQLState: " + ex.getSQLState());
+					        System.out.println("VendorError: " + ex.getErrorCode());
+							textField.setText("");
+					        passwordField.setText("");
+						} catch (ClassNotFoundException ex) {				
+							JOptionPane.showMessageDialog(null,
+				                    "No se pudo conectar a la base de datos.\n" + ex.getMessage(),
+				                     "Error", JOptionPane.ERROR_MESSAGE);
+					        System.out.println("Exception: " + ex.getMessage());
+							textField.setText("");
 					        passwordField.setText("");
 						}						
 					}

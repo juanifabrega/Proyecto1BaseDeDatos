@@ -35,18 +35,6 @@ public class VentanaInspector extends JInternalFrame {
 		 setVisible(false);
 		 bdd = new BDD();
 		 listaPatentes = new LinkedList<String>();
-		 try {
-			bdd.conectar("inspector", "inspector");
-		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (SQLException ex) {
-			JOptionPane.showMessageDialog(null,
-                    "No se pudo conectar a la base de datos.\n" + ex.getMessage(),
-                     "Error", JOptionPane.ERROR_MESSAGE);
-	        System.out.println("SQLException: " + ex.getMessage());
-	        System.out.println("SQLState: " + ex.getSQLState());
-	        System.out.println("VendorError: " + ex.getErrorCode());
-		}
 		 
 		 addInternalFrameListener(new InternalFrameAdapter() {
 		 	@Override
@@ -82,38 +70,22 @@ public class VentanaInspector extends JInternalFrame {
         
 	}
 	
-	
 
-	public boolean loguear(int legajo, String clave) {
-		boolean exito = false;			
+	public boolean loguear(int legajo, String clave) throws SQLException, ClassNotFoundException {
+		boolean exito;			
+		bdd.conectar("inspector", "inspector");	
 		
-		//////////////////////////////////////////////////////////////////
-		// 																//
-		//	Acá hay que encontrar los datos del inspector en la BDD.	//
-		//  Si los datos son correctos: exito = true					//
-		// 			   caso contrario: exito=false					    //
-		//																//
-		//////////////////////////////////////////////////////////////////
+		String consultaSql = "SELECT legajo, password " +
+				"FROM inspectores " +
+				"WHERE legajo="+legajo+" AND " +
+				"password=md5('"+clave+"');";
 		
-//		try {
-//			ResultSet resultado = bdd.ejecutarSentencia("SELECT legajo, password FROM inspectores;");
-//			while(resultado.next())
-//				if(legajo == resultado.getInt(1)) {
-//					bdd.ejecutarSentencia("SELECT password FROM inspectores WHERE legajo = "+ legajo +";").next()==clave
-//					if(clave == resu)
-//				}
-//			
-//			
-//		} catch (SQLException e1) {
-//			e1.printStackTrace();
-//		}
-		
-		
-		
-					
+		ResultSet rs = bdd.ejecutarSentencia(consultaSql);
+		exito = rs.next();
 		
 		try { // ésto es para mostrar la ventana cuando los datos son correctos
 	    	if(exito) {
+	    		System.out.println("aparece ventana");
 	    		setVisible(true);
 	    		setMaximum(true);
 	    	}
