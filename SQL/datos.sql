@@ -141,7 +141,7 @@ INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
 VALUES (4,333,'Rincon','100','ma','T');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (1,4444,'Estomba','1200','lu','T');
+VALUES (5,4444,'Estomba','1200','lu','T');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en multas
