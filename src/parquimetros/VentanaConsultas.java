@@ -250,7 +250,6 @@ public class VentanaConsultas extends JInternalFrame {
         try {
 			setMaximum(true);
 		} catch (PropertyVetoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

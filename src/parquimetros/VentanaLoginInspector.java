@@ -21,6 +21,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class VentanaLoginInspector extends JDialog {
 
@@ -57,6 +59,18 @@ public class VentanaLoginInspector extends JDialog {
 		}
 		{
 			textField = new JTextField();
+			textField.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyTyped(KeyEvent e) {	
+			        char c = e.getKeyChar();
+			        if (!(Character.isDigit(c) ||
+			         	(c == KeyEvent.VK_BACK_SPACE) ||
+			            (c == KeyEvent.VK_DELETE))) {
+			             e.consume();
+			        }
+				}
+			});
+			
 			GridBagConstraints gbc_textField = new GridBagConstraints();
 			gbc_textField.fill = GridBagConstraints.BOTH;
 			gbc_textField.insets = new Insets(0, 0, 5, 0);
@@ -95,7 +109,7 @@ public class VentanaLoginInspector extends JDialog {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {
 						
-						String legajo = textField.getText();
+						int legajo = Integer.parseInt(textField.getText());
 						String clave = new String(passwordField.getPassword());
 						if(ventanaInspector.loguear(legajo, clave)) {
 		                    dispose(); 

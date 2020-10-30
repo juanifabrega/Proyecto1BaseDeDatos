@@ -1,7 +1,10 @@
 package parquimetros;
 
 import java.beans.PropertyVetoException;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.JInternalFrame;
@@ -11,6 +14,9 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
 import quick.dbtable.DBTable;
+import javax.swing.JButton;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VentanaInspector extends JInternalFrame {
 
@@ -18,6 +24,7 @@ public class VentanaInspector extends JInternalFrame {
 	private static final long serialVersionUID = 1L;
 	private BDD bdd;
 	private DBTable tabla;
+	private LinkedList<String> listaPatentes;
 	
 	
 	public VentanaInspector() {
@@ -27,6 +34,7 @@ public class VentanaInspector extends JInternalFrame {
 	               false); // iconifiable
 		 setVisible(false);
 		 bdd = new BDD();
+		 listaPatentes = new LinkedList<String>();
 		 try {
 			bdd.conectar("inspector", "inspector");
 		} catch (ClassNotFoundException ex) {
@@ -62,13 +70,22 @@ public class VentanaInspector extends JInternalFrame {
         setLocation(0, -12);
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         
+        JButton btnAgregarPatente = new JButton("Agregar patente");
+        btnAgregarPatente.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		listaPatentes.add(JOptionPane.showInputDialog("Agregar patente:"));
+        	    System.out.println("Patente agregada: " + listaPatentes.getLast());        		
+        	}
+        });
+        getContentPane().add(btnAgregarPatente);
+        
 	}
 	
 	
 
-	public boolean loguear(String legajo, String clave) {
-		boolean exito = true;
-				
+	public boolean loguear(int legajo, String clave) {
+		boolean exito = false;			
 		
 		//////////////////////////////////////////////////////////////////
 		// 																//
@@ -77,6 +94,21 @@ public class VentanaInspector extends JInternalFrame {
 		// 			   caso contrario: exito=false					    //
 		//																//
 		//////////////////////////////////////////////////////////////////
+		
+//		try {
+//			ResultSet resultado = bdd.ejecutarSentencia("SELECT legajo, password FROM inspectores;");
+//			while(resultado.next())
+//				if(legajo == resultado.getInt(1)) {
+//					bdd.ejecutarSentencia("SELECT password FROM inspectores WHERE legajo = "+ legajo +";").next()==clave
+//					if(clave == resu)
+//				}
+//			
+//			
+//		} catch (SQLException e1) {
+//			e1.printStackTrace();
+//		}
+		
+		
 		
 					
 		
