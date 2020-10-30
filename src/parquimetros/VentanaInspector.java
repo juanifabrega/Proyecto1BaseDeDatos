@@ -108,6 +108,7 @@ public class VentanaInspector extends JInternalFrame {
         			altura=altura+String.valueOf(letra);
         			i++;
         		}
+        		comboBox_1.removeAllItems();
         		actualizarCombobox2(calle,altura);       	        		
         	}
         });
