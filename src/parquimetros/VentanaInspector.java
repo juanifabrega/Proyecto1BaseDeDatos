@@ -125,7 +125,7 @@ public class VentanaInspector extends JInternalFrame {
 					 "VALUES (" + legajo + ","+ id_parq +",CURDATE(),CURTIME());";		
 		try {
 			bdd.ejecutarModificacion(sql);
-			bdd.limpiarSentencia();
+			bdd.limpiarModificacion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
