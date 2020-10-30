@@ -76,7 +76,7 @@ VALUES (333,7539510,'Nahuel','Rodriguez',md5('pepeargento2020'));
 #Insercion en ubicaciones
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Ramon y Cajal','1200',1.47);
+VALUES ('Estomba','1200',1.47);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
 VALUES ('Belgrano','300',5.75);
@@ -91,7 +91,7 @@ VALUES ('Rincon','100',80.38);
 #Insercion en parquimetros
 
 INSERT INTO parquimetros(id_parq,numero,calle,altura)
-VALUES (1,1,'Ramon y Cajal','1200');
+VALUES (1,1,'Estomba','1200');
 
 INSERT INTO parquimetros(id_parq,numero,calle,altura)
 VALUES (2,2,'Belgrano','300');
@@ -126,7 +126,7 @@ VALUES (333,2,CURDATE(),CURTIME());
 #Insercion en asociado_con
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (1,4444,'Ramon y Cajal','1200','lu','M');
+VALUES (1,4444,'Estomba','1200','lu','M');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
 VALUES (2,4444,'Belgrano','300','lu','T');

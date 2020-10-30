@@ -105,7 +105,7 @@ public class VentanaInspector extends JInternalFrame {
         		i++;
         		while(i<palabra.length()) {
         			letra=palabra.charAt(i);
-        			altura=calle+String.valueOf(letra);
+        			altura=altura+String.valueOf(letra);
         			i++;
         		}
         		actualizarCombobox2(calle,altura);       	        		
@@ -123,9 +123,10 @@ public class VentanaInspector extends JInternalFrame {
 	}
 	
 	private void actualizarCombobox2(String calle, String altura){
+		System.out.println(calle+altura);
 		String sql="SELECT id_parq " +
 				   "FROM parquimetros " +
-				   "WHERE calle=" + calle + " AND altura=" + altura + ";" ;
+				   "WHERE calle='" + calle + "' AND altura=" + altura + ";" ;
 		try {
 			ResultSet rs = bdd.ejecutarSentencia(sql);
 			while(rs.next()) {
