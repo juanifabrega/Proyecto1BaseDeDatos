@@ -33,6 +33,7 @@ public class VentanaInspector extends JInternalFrame {
 	private JPanel panel;
 	private static JComboBox comboBox;
 	private int legajo;
+	private JComboBox comboBox_2;
 	private JComboBox comboBox_1;
 	
 	
@@ -92,35 +93,64 @@ public class VentanaInspector extends JInternalFrame {
         comboBox = new JComboBox();
         comboBox.addItemListener(new ItemListener() {
         	public void itemStateChanged(ItemEvent e) {
-        		String palabra=(String) comboBox.getItemAt(comboBox.getSelectedIndex());  
-        		String calle="";
-        		String altura="";
-        		char letra;
-        		int i=0;
-        		while(i<palabra.length() && palabra.charAt(i)!=' ' ) {
-        			letra=palabra.charAt(i);
-        			calle=calle+String.valueOf(letra);
-        			i++;
-        		}
-        		i++;
-        		while(i<palabra.length()) {
-        			letra=palabra.charAt(i);
-        			altura=altura+String.valueOf(letra);
-        			i++;
-        		}
         		comboBox_1.removeAllItems();
-        		actualizarCombobox2(calle,altura);       	        		
+        		comboBox_2.removeAllItems();
+        		String calle=(String) comboBox.getItemAt(comboBox.getSelectedIndex());
+        		actualizarCombobox1(calle);
         	}
         });
         panel.add(comboBox);
         
-        
         comboBox_1 = new JComboBox();
+        comboBox_1.addItemListener(new ItemListener() {
+        	public void itemStateChanged(ItemEvent e) {
+        		comboBox_2.removeAllItems();
+        		String calle=(String) comboBox.getItemAt(comboBox.getSelectedIndex());
+        		String altura=(String) comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
+        		actualizarCombobox2(calle,altura);
+        	}
+        });
         panel.add(comboBox_1);
         
         
+        comboBox_2 = new JComboBox();
+        panel.add(comboBox_2);
         
         
+        
+        
+	}
+	
+	private void actualizarComboBox() {
+		String sql = "SELECT calle " +
+					 "FROM ubicaciones;";
+		try {
+			ResultSet rs = bdd.ejecutarSentencia(sql);
+			System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
+			while(rs.next()) {
+				comboBox.addItem(rs.getString("calle"));
+			}
+			bdd.limpiarSentencia();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	private void actualizarCombobox1(String calle) {
+		String sql = "SELECT altura " +
+				     "FROM ubicaciones "+
+				     "WHERE calle='" +calle+"';";
+		try {
+			ResultSet rs = bdd.ejecutarSentencia(sql);
+				
+			while(rs.next()) {
+				
+				comboBox_1.addItem(rs.getInt("altura")+"");
+			}
+			bdd.limpiarSentencia();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
 	}
 	
 	private void actualizarCombobox2(String calle, String altura){
@@ -131,28 +161,12 @@ public class VentanaInspector extends JInternalFrame {
 		try {
 			ResultSet rs = bdd.ejecutarSentencia(sql);
 			while(rs.next()) {
-				comboBox_1.addItem(rs.getString("id_parq"));
+				comboBox_2.addItem(rs.getInt("id_parq"));
 			}
 			bdd.limpiarSentencia();	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private void actualizarComboBox() {
-		String sql = "SELECT calle, altura " +
-					 "FROM ubicaciones;";
-		try {
-			ResultSet rs = bdd.ejecutarSentencia(sql);
-			System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
-			while(rs.next()) {
-				System.out.println(rs.getString(1)+" "+rs.getString(2));
-				comboBox.addItem(rs.getString("calle")+" "+rs.getString("altura"));
-			}
-			bdd.limpiarSentencia();	
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}		
 	}
 
 
@@ -187,4 +201,3 @@ public class VentanaInspector extends JInternalFrame {
 	
 
 }
-
