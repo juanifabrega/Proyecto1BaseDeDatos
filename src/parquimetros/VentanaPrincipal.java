@@ -24,6 +24,7 @@ public class VentanaPrincipal {
 	private VentanaConsultas ventanaConsultas;
 	private VentanaLoginAdmin ventanaLoginAdmin;
 	private VentanaInspector ventanaInspector;
+	private VentanaLoginInspector ventanaLoginInspector;
 	
 	
 	public static void main(String[] args) {
@@ -43,10 +44,11 @@ public class VentanaPrincipal {
 		initialize();
 
         ventanaConsultas = new VentanaConsultas();
+        ventanaConsultas.setVisible(false);
         frame.getContentPane().add(ventanaConsultas);
 		
         ventanaInspector = new VentanaInspector();
-        ventanaInspector.setVisible(false);
+        frame.getContentPane().add(ventanaInspector);
 	}
 	
 	
@@ -135,7 +137,8 @@ public class VentanaPrincipal {
                             "Ya hay una conexión activa.\nCierre para iniciar otra..",
                              "Error", JOptionPane.ERROR_MESSAGE);
             	else {
-                    System.out.println("se abre ventana de inspector");            		
+            		ventanaLoginInspector = new VentanaLoginInspector(ventanaInspector);
+            	    ventanaLoginInspector.setVisible(true);           		
             	}
              }
         });

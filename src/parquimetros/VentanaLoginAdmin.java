@@ -22,7 +22,7 @@ public class VentanaLoginAdmin extends JDialog {
 
 
 	private static final long serialVersionUID = 1L;
-	private final JPanel contentPanel = new JPanel();
+	private JPanel contentPanel = new JPanel();
 	private JPasswordField passwordField;
 
 
@@ -90,7 +90,7 @@ public class VentanaLoginAdmin extends JDialog {
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("Cancelar");
 				cancelButton.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent arg0) {

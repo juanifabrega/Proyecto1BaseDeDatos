@@ -18,6 +18,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
@@ -70,12 +71,9 @@ public class VentanaConsultas extends JInternalFrame {
 		 });
 		 
 		 
-		setBounds(100, 100, 853, 521);
+		setBounds(100, 100, 847, 458);
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-		
-		
-
-        setLocation(0, -12);
+        
         
 		getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));	        
         splitPane = new JSplitPane();
@@ -249,6 +247,12 @@ public class VentanaConsultas extends JInternalFrame {
 		}
         
         setVisible(true);
+        try {
+			setMaximum(true);
+		} catch (PropertyVetoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

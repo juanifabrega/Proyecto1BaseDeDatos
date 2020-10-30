@@ -1,6 +1,6 @@
 package parquimetros;
 
-import java.awt.EventQueue;
+import java.beans.PropertyVetoException;
 import java.sql.SQLException;
 
 import javax.swing.BoxLayout;
@@ -15,23 +15,10 @@ import quick.dbtable.DBTable;
 public class VentanaInspector extends JInternalFrame {
 
 	
-
-    private BDD bdd;
+	private static final long serialVersionUID = 1L;
+	private BDD bdd;
 	private DBTable tabla;
 	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					VentanaInspector frame = new VentanaInspector();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	
 	public VentanaInspector() {
 		 super("", false, // resizable
@@ -40,7 +27,19 @@ public class VentanaInspector extends JInternalFrame {
 	               false); // iconifiable
 		 setVisible(false);
 		 bdd = new BDD();
-
+		 try {
+			bdd.conectar("inspector", "inspector");
+		} catch (ClassNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (SQLException ex) {
+			JOptionPane.showMessageDialog(null,
+                    "No se pudo conectar a la base de datos.\n" + ex.getMessage(),
+                     "Error", JOptionPane.ERROR_MESSAGE);
+	        System.out.println("SQLException: " + ex.getMessage());
+	        System.out.println("SQLState: " + ex.getSQLState());
+	        System.out.println("VendorError: " + ex.getErrorCode());
+		}
+		 
 		 addInternalFrameListener(new InternalFrameAdapter() {
 		 	@Override
 		 	public void internalFrameClosing(InternalFrameEvent e) {
@@ -64,6 +63,36 @@ public class VentanaInspector extends JInternalFrame {
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.X_AXIS));
         
 	}
-	//COMENTARIO JUANI 
+	
+	
+
+	public boolean loguear(String legajo, String clave) {
+		boolean exito = true;
+				
+		
+		//////////////////////////////////////////////////////////////////
+		// 																//
+		//	Acá hay que encontrar los datos del inspector en la BDD.	//
+		//  Si los datos son correctos: exito = true					//
+		// 			   caso contrario: exito=false					    //
+		//																//
+		//////////////////////////////////////////////////////////////////
+		
+					
+		
+		try { // ésto es para mostrar la ventana cuando los datos son correctos
+	    	if(exito) {
+	    		setVisible(true);
+	    		setMaximum(true);
+	    	}
+		} catch (PropertyVetoException e) {
+			e.printStackTrace();
+		}		
+		return exito;
+	}
+	
+	
+	
 
 }
+
