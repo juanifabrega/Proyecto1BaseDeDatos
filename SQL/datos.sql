@@ -79,6 +79,9 @@ INSERT INTO ubicaciones(calle,altura,tarifa)
 VALUES ('Estomba','1200',1.47);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
+VALUES ('Estomba','1300',1.45);
+
+INSERT INTO ubicaciones(calle,altura,tarifa)
 VALUES ('Belgrano','300',5.75);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
@@ -107,6 +110,9 @@ VALUES (5,5,'Rincon','100');
 
 INSERT INTO parquimetros(id_parq,numero,calle,altura)
 VALUES (6,6,'Rincon','100');
+
+INSERT INTO parquimetros(id_parq,numero,calle,altura)
+VALUES (7,7,'Estomba','1300');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en estacionamientos
