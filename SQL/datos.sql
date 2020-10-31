@@ -179,7 +179,7 @@ INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
 VALUES (12,333,'Estomba','1200','vi','T');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (13,333,'Estomba','1200','sa','T');
+VALUES (13,333,'Estomba','1200','sa','M');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
 VALUES (14,333,'Estomba','1200','do','T');

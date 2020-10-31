@@ -189,6 +189,7 @@ GRANT SELECT ON parquimetros.tipos_tarjeta TO 'venta'@'%';
 CREATE USER 'inspector'@'%' IDENTIFIED BY 'inspector';
 GRANT SELECT ON parquimetros.inspectores TO 'inspector'@'%';
 GRANT INSERT ON parquimetros.multa TO 'inspector'@'%'; 
+GRANT SELECT ON parquimetros.multa TO 'inspector'@'%'; 
 GRANT SELECT ON parquimetros.estacionados TO 'inspector'@'%';
 GRANT INSERT ON parquimetros.accede TO 'inspector'@'%';
 GRANT SELECT ON parquimetros.parquimetros TO 'inspector'@'%';

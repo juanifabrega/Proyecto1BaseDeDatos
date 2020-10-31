@@ -15,7 +15,6 @@ import javax.swing.event.InternalFrameEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import quick.dbtable.DBTable;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -31,8 +30,6 @@ import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import javax.swing.JTable;
 
 public class VentanaInspector extends JInternalFrame {
@@ -205,14 +202,6 @@ public class VentanaInspector extends JInternalFrame {
         gbc_comboBox_2.gridy = 2;
         panel.add(comboBox_2, gbc_comboBox_2);
         
-//        panel_1 = new JPanel();
-//        getContentPane().add(panel_1, BorderLayout.CENTER);
-//        panel_1.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
-//        
-//        table = new JTable();
-//        panel_1.add(table);
-//        
-        
         scrollPane = new JScrollPane();
         getContentPane().add(scrollPane, BorderLayout.CENTER);        
         
@@ -296,9 +285,9 @@ public class VentanaInspector extends JInternalFrame {
 				case 6: dia = "vi"; break;
 				case 7: dia = "sa"; break;				
 			}				
-			//CAMBIAR EL HORARIO A <20
+			
 			String sql_turno = "SELECT (CURTIME()>'08:00:00' AND CURTIME()<'13:59:00') turno_M,"
-									+ "(CURTIME()>'14:00:00' AND CURTIME()<'24:00:00') turno_T;";
+									+ "(CURTIME()>'14:00:00' AND CURTIME()<'20:00:00') turno_T;";
 			ResultSet rs2 = bdd.ejecutarSentencia(sql_turno);
 			rs2.next();
 			int turno_m = rs2.getInt("turno_M");
@@ -335,8 +324,6 @@ public class VentanaInspector extends JInternalFrame {
 		String altura=(String) comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
 		int alturaa= Integer.parseInt(altura);
 		if (controlarUbicacion(calle,alturaa)){
-			//String idparq=(String) comboBox_2.getItemAt(comboBox_2.getSelectedIndex());
-			//int idpark=Integer.parseInt(idparq);
 			int idpark= (Integer) comboBox_2.getItemAt(comboBox_2.getSelectedIndex());
 			registrarAcceso(idpark);
 			generarMultas();
@@ -353,8 +340,7 @@ public class VentanaInspector extends JInternalFrame {
 				     "FROM estacionados "+
 				     "WHERE calle='"+calle+"' AND altura='"+altura+"' ;";
 		try {
-			ResultSet rs = bdd.ejecutarSentencia(sql);
-			//System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
+			ResultSet rs = bdd.ejecutarSentencia(sql);			
 			while(rs.next()) {
 				String patente= rs.getString("patente");
 				listaPatentes.remove(patente);
@@ -365,7 +351,6 @@ public class VentanaInspector extends JInternalFrame {
 			while(list_Iter.hasNext()){ 
 		           String patente=(String) list_Iter.next();
 		           insertarMulta(patente);
-		           //System.out.println(patente);
 		    } 
 			
 			
@@ -380,14 +365,35 @@ public class VentanaInspector extends JInternalFrame {
 		String sql="INSERT INTO multa(fecha,hora,patente,id_asociado_con) VALUES (CURDATE(),CURTIME(),'"+
 					patente+"',"+idasociadocon+");";
 		
-		//System.out.println(patente+"de insertar en la tabla");
-		//System.out.println(sql);
 		try {
 			bdd.ejecutarModificacion(sql);
 			bdd.limpiarModificacion();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}	
+		
+		System.out.println("CARGA DE TABLA DE JAVA");
+		String sql1 = "SELECT * "+
+					  "FROM multa " +
+					  "WHERE fecha=CURDATE() AND "+
+					  "patente='"+ patente +"' AND "+
+					  "id_asociado_con=" + idasociadocon + ";" ;
+		
+		try {
+			ResultSet rs = bdd.ejecutarSentencia(sql1);
+			while(rs.next()) {
+				int altura = Integer.parseInt((String) comboBox_1.getItemAt(comboBox_1.getSelectedIndex()));
+				agregarFila(rs.getInt("id_asociado_con"), rs.getString("fecha"),rs.getString("hora"), (String)comboBox.getItemAt(comboBox.getSelectedIndex()),altura ,patente, legajo);
+			}
+				
+		} catch (SQLException e) {
+			System.out.println("ERROR TABLA DE JAVA");
+			e.printStackTrace();
+		}
+		
+					  
+	;
+					
 		
 	}
 	
