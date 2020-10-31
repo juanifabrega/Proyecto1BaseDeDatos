@@ -4,17 +4,16 @@ import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
-import quick.dbtable.DBTable;
 import javax.swing.JButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,6 +21,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
@@ -38,19 +38,19 @@ public class VentanaInspector extends JInternalFrame {
 	
 	private static final long serialVersionUID = 1L;
 	private BDD bdd;
-	private DBTable tabla;
 	private LinkedList<String> listaPatentes;
 	private JPanel panel;
 	private static JComboBox comboBox;
 	private int legajo;
 	private JComboBox comboBox_2;
 	private JComboBox comboBox_1;
-	private JPanel panel_1;
 	private JLabel lblCalle;
 	private JLabel lblAltura;
 	private JLabel lblNmParqumetros;
 	private JButton btnMulta;
-	private JTable table;
+	private JScrollPane scrollPane;
+	private JTable tabla;
+	private TableModel multaModel;
 	
 	
 	public VentanaInspector() {
@@ -98,7 +98,7 @@ public class VentanaInspector extends JInternalFrame {
         getContentPane().add(panel, BorderLayout.NORTH);
         GridBagLayout gbl_panel = new GridBagLayout();
         gbl_panel.columnWidths = new int[]{245, 154, 159, 223, 0};
-        gbl_panel.rowHeights = new int[] {36, 0, 0, 0};
+        gbl_panel.rowHeights = new int[] {36, 0, 42, 0};
         gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_panel);
@@ -192,15 +192,10 @@ public class VentanaInspector extends JInternalFrame {
         gbc_comboBox_2.gridy = 2;
         panel.add(comboBox_2, gbc_comboBox_2);
         
-        panel_1 = new JPanel();
-        getContentPane().add(panel_1, BorderLayout.CENTER);
-        panel_1.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
+        scrollPane = new JScrollPane();
+        getContentPane().add(scrollPane, BorderLayout.CENTER);        
         
-        table = new JTable();
-        panel_1.add(table);
-        
-	}
-	
+
 	
 
 	public void registrarAcceso(int id_parq) {
