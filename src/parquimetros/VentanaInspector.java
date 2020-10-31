@@ -51,6 +51,7 @@ public class VentanaInspector extends JInternalFrame {
 	private JLabel lblNmParqumetros;
 	private JButton btnMulta;
 	private JTable table;
+	private String idasociadocon;
 	
 	
 	public VentanaInspector() {
@@ -165,6 +166,17 @@ public class VentanaInspector extends JInternalFrame {
         panel.add(comboBox_1, gbc_comboBox_1);
         
         btnMulta = new JButton("Generar multas");
+        btnMulta.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		if(listaPatentes.size()>0){
+        			generarMulta();       			
+        		}
+        		else{//no tiene patentes cargadas
+        			JOptionPane.showMessageDialog(null,"Debe insertar patentes.\n","Error", JOptionPane.ERROR_MESSAGE);
+        		}
+        	}
+        });
         btnMulta.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         	}
@@ -201,9 +213,8 @@ public class VentanaInspector extends JInternalFrame {
         
 	}
 	
-	
 
-	public void registrarAcceso(int id_parq) {
+	private void registrarAcceso(int id_parq) {
 		String sql = "INSERT INTO accede(legajo,id_parq,fecha,hora) " +
 					 "VALUES (" + legajo + ","+ id_parq +",CURDATE(),CURTIME());";		
 		try {
@@ -214,7 +225,7 @@ public class VentanaInspector extends JInternalFrame {
 		}
 	}	
 	
-	public boolean controlarUbicacion(String calle, int altura) {
+	private boolean controlarUbicacion(String calle, int altura) {
 		boolean controlSuperado = false;
 		try {
 			
@@ -233,9 +244,9 @@ public class VentanaInspector extends JInternalFrame {
 				case 6: dia = "vi"; break;
 				case 7: dia = "sa"; break;				
 			}				
-			
+			//CAMBIAR EL HORARIO A <20
 			String sql_turno = "SELECT (CURTIME()>'08:00:00' AND CURTIME()<'13:59:00') turno_M,"
-									+ "(CURTIME()>'14:00:00' AND CURTIME()<'20:00:00') turno_T;";
+									+ "(CURTIME()>'14:00:00' AND CURTIME()<'24:00:00') turno_T;";
 			ResultSet rs2 = bdd.ejecutarSentencia(sql_turno);
 			rs2.next();
 			int turno_m = rs2.getInt("turno_M");
@@ -248,7 +259,7 @@ public class VentanaInspector extends JInternalFrame {
 				if(turno_t==1)
 					turno = "T";						
 			
-			String sql = "SELECT legajo, calle, altura, dia, turno " +
+			String sql = "SELECT * " +
 						 "FROM asociado_con " +
 						 "WHERE legajo=" + legajo + " AND " +
 						 		"calle='" + calle + "' AND " +
@@ -257,6 +268,9 @@ public class VentanaInspector extends JInternalFrame {
 						 		"turno='"+ turno +"';";
 			ResultSet rs3 = bdd.ejecutarSentencia(sql);
 			controlSuperado = rs3.next();
+			if (controlSuperado){
+				idasociadocon= rs3.getInt("id_asociado_con")+"";
+			}
 			bdd.limpiarSentencia();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -264,21 +278,56 @@ public class VentanaInspector extends JInternalFrame {
 		return controlSuperado;
 	}
 	
-	public void generarMulta(){
+	private void generarMulta(){
 		String calle=(String) comboBox.getItemAt(comboBox.getSelectedIndex());
 		String altura=(String) comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
 		int alturaa= Integer.parseInt(altura);
 		if (controlarUbicacion(calle,alturaa)){
-			String idparq=(String) comboBox_2.getItemAt(comboBox_2.getSelectedIndex());
-			int idpark=Integer.parseInt(idparq);
+			//String idparq=(String) comboBox_2.getItemAt(comboBox_2.getSelectedIndex());
+			//int idpark=Integer.parseInt(idparq);
+			int idpark= (Integer) comboBox_2.getItemAt(comboBox_2.getSelectedIndex());
 			registrarAcceso(idpark);
-			//generarMultas();
+			generarMultas();
 		}
 		else{
 			JOptionPane.showMessageDialog(null,"El inspector no esta autorizado a labrar multas en esta ubicacion.\n","Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
+	private void generarMultas(){
+		String calle=(String) comboBox.getItemAt(comboBox.getSelectedIndex());
+		String altura=(String) comboBox_1.getItemAt(comboBox_1.getSelectedIndex());
+		String sql = "SELECT patente " +
+				     "FROM estacionados "+
+				     "WHERE calle='"+calle+"' AND altura='"+altura+"' ;";
+		try {
+			ResultSet rs = bdd.ejecutarSentencia(sql);
+			System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
+			while(rs.next()) {
+				String patente= rs.getString("patente");
+				if(!listaPatentes.contains(patente)){
+					//hay que hacerle la multa
+					insertarMulta(patente);
+					
+				}
+			}
+			bdd.limpiarSentencia();	
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+	}
+	
+	private void insertarMulta(String patente) {
+		String sql="INSERT INTO multa(fecha,hora,patente,id_asociado_con) VALUES (CURDATE(),CURTIME(),"+
+					patente+","+idasociadocon+");";
+		try {
+			bdd.ejecutarModificacion(sql);
+			bdd.limpiarModificacion();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}	
+		
+	}
 	
 	
 	
