@@ -179,10 +179,7 @@ public class VentanaInspector extends JInternalFrame {
         		}
         	}
         });
-        btnMulta.addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent arg0) {
-        	}
-        });
+        
         GridBagConstraints gbc_btnMulta = new GridBagConstraints();
         gbc_btnMulta.anchor = GridBagConstraints.EAST;
         gbc_btnMulta.insets = new Insets(0, 0, 5, 0);
