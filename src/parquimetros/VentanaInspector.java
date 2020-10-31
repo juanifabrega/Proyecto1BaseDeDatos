@@ -173,8 +173,8 @@ public class VentanaInspector extends JInternalFrame {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
         		if(listaPatentes.size()>0){
+        			generarMulta();
         			listaPatentes= new LinkedList<String>();
-        			generarMulta();       			
         		}
         		else{//no tiene patentes cargadas
         			JOptionPane.showMessageDialog(null,"Debe insertar patentes.\n","Error", JOptionPane.ERROR_MESSAGE);
