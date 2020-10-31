@@ -4,6 +4,7 @@ import java.beans.PropertyVetoException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.JInternalFrame;
@@ -172,6 +173,7 @@ public class VentanaInspector extends JInternalFrame {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
         		if(listaPatentes.size()>0){
+        			listaPatentes= new LinkedList<String>();
         			generarMulta();       			
         		}
         		else{//no tiene patentes cargadas
@@ -352,15 +354,22 @@ public class VentanaInspector extends JInternalFrame {
 				     "WHERE calle='"+calle+"' AND altura='"+altura+"' ;";
 		try {
 			ResultSet rs = bdd.ejecutarSentencia(sql);
-			System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
+			//System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
 			while(rs.next()) {
 				String patente= rs.getString("patente");
-				if(!listaPatentes.contains(patente)){
-					//hay que hacerle la multa
-					insertarMulta(patente);
-					
-				}
+				listaPatentes.remove(patente);
 			}
+			
+			ListIterator<String> list_Iter = listaPatentes.listIterator(); 
+			
+			while(list_Iter.hasNext()){ 
+		           String patente=(String) list_Iter.next();
+		           insertarMulta(patente);
+		           //System.out.println(patente);
+		    } 
+			
+			
+			
 			bdd.limpiarSentencia();	
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -368,8 +377,11 @@ public class VentanaInspector extends JInternalFrame {
 	}
 	
 	private void insertarMulta(String patente) {
-		String sql="INSERT INTO multa(fecha,hora,patente,id_asociado_con) VALUES (CURDATE(),CURTIME(),"+
-					patente+","+idasociadocon+");";
+		String sql="INSERT INTO multa(fecha,hora,patente,id_asociado_con) VALUES (CURDATE(),CURTIME(),'"+
+					patente+"',"+idasociadocon+");";
+		
+		//System.out.println(patente+"de insertar en la tabla");
+		//System.out.println(sql);
 		try {
 			bdd.ejecutarModificacion(sql);
 			bdd.limpiarModificacion();
