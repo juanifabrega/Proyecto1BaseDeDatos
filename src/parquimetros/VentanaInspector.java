@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
@@ -31,6 +32,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JList;
 
 public class VentanaInspector extends JInternalFrame {
 
@@ -52,6 +54,9 @@ public class VentanaInspector extends JInternalFrame {
 	private JScrollPane scrollPane;
 	private JTable tabla;
 	private TableModel multaModel;
+	private JScrollPane scrollPane_1;
+	private JList list;
+	private DefaultListModel listModel;
 	
 	
 	public VentanaInspector() {
@@ -98,16 +103,16 @@ public class VentanaInspector extends JInternalFrame {
         panel.setBorder(BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK));
         getContentPane().add(panel, BorderLayout.NORTH);
         GridBagLayout gbl_panel = new GridBagLayout();
-        gbl_panel.columnWidths = new int[]{245, 154, 159, 223, 0};
-        gbl_panel.rowHeights = new int[] {36, 0, 0, 0};
+        gbl_panel.columnWidths = new int[]{154, 210, 215, 223, 0};
+        gbl_panel.rowHeights = new int[] {36, 0, 0, 0, 0};
         gbl_panel.columnWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-        gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, Double.MIN_VALUE};
+        gbl_panel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
         panel.setLayout(gbl_panel);
         
         lblCalle = new JLabel("Calle");
         GridBagConstraints gbc_lblCalle = new GridBagConstraints();
         gbc_lblCalle.insets = new Insets(0, 0, 5, 5);
-        gbc_lblCalle.gridx = 1;
+        gbc_lblCalle.gridx = 0;
         gbc_lblCalle.gridy = 0;
         panel.add(lblCalle, gbc_lblCalle);
         
@@ -123,29 +128,31 @@ public class VentanaInspector extends JInternalFrame {
         GridBagConstraints gbc_comboBox = new GridBagConstraints();
         gbc_comboBox.fill = GridBagConstraints.HORIZONTAL;
         gbc_comboBox.insets = new Insets(0, 0, 5, 5);
-        gbc_comboBox.gridx = 2;
+        gbc_comboBox.gridx = 1;
         gbc_comboBox.gridy = 0;
         panel.add(comboBox, gbc_comboBox);
         
-        JButton btnAgregarPatente = new JButton("Agregar patente");
-        GridBagConstraints gbc_btnAgregarPatente = new GridBagConstraints();
-        gbc_btnAgregarPatente.anchor = GridBagConstraints.WEST;
-        gbc_btnAgregarPatente.insets = new Insets(0, 0, 5, 5);
-        gbc_btnAgregarPatente.gridx = 0;
-        gbc_btnAgregarPatente.gridy = 1;
-        panel.add(btnAgregarPatente, gbc_btnAgregarPatente);
-        btnAgregarPatente.addMouseListener(new MouseAdapter() {
-        	@Override
-        	public void mouseClicked(MouseEvent arg0) {
-        		listaPatentes.add(JOptionPane.showInputDialog("Agregar patente:"));
-        	    System.out.println("Patente agregada: " + listaPatentes.getLast());        		
-        	}
-        });
+
+        list = new JList();
+        listModel = new DefaultListModel<>();
+        list.setModel(listModel);
+        
+        scrollPane_1 = new JScrollPane(list);
+        GridBagConstraints gbc_scrollPane_1 = new GridBagConstraints();
+        gbc_scrollPane_1.gridheight = 4;
+        gbc_scrollPane_1.insets = new Insets(0, 0, 5, 5);
+        gbc_scrollPane_1.fill = GridBagConstraints.BOTH;
+        gbc_scrollPane_1.gridx = 2;
+        gbc_scrollPane_1.gridy = 0;
+        panel.add(scrollPane_1, gbc_scrollPane_1);
+        
+                
+        
         
         lblAltura = new JLabel("Altura");
         GridBagConstraints gbc_lblAltura = new GridBagConstraints();
         gbc_lblAltura.insets = new Insets(0, 0, 5, 5);
-        gbc_lblAltura.gridx = 1;
+        gbc_lblAltura.gridx = 0;
         gbc_lblAltura.gridy = 1;
         panel.add(lblAltura, gbc_lblAltura);
         
@@ -161,7 +168,7 @@ public class VentanaInspector extends JInternalFrame {
         GridBagConstraints gbc_comboBox_1 = new GridBagConstraints();
         gbc_comboBox_1.fill = GridBagConstraints.HORIZONTAL;
         gbc_comboBox_1.insets = new Insets(0, 0, 5, 5);
-        gbc_comboBox_1.gridx = 2;
+        gbc_comboBox_1.gridx = 1;
         gbc_comboBox_1.gridy = 1;
         panel.add(comboBox_1, gbc_comboBox_1);
         
@@ -172,6 +179,11 @@ public class VentanaInspector extends JInternalFrame {
         		if(listaPatentes.size()>0){
         			generarMulta();
         			listaPatentes= new LinkedList<String>();
+
+        			
+            		listModel = new DefaultListModel<>();
+            		list.setModel(listModel);
+            		
         		}
         		else{//no tiene patentes cargadas
         			JOptionPane.showMessageDialog(null,"Debe insertar patentes.\n","Error", JOptionPane.ERROR_MESSAGE);
@@ -180,7 +192,8 @@ public class VentanaInspector extends JInternalFrame {
         });
         
         GridBagConstraints gbc_btnMulta = new GridBagConstraints();
-        gbc_btnMulta.anchor = GridBagConstraints.EAST;
+        gbc_btnMulta.fill = GridBagConstraints.VERTICAL;
+        gbc_btnMulta.gridheight = 2;
         gbc_btnMulta.insets = new Insets(0, 0, 5, 0);
         gbc_btnMulta.gridx = 3;
         gbc_btnMulta.gridy = 1;
@@ -188,8 +201,8 @@ public class VentanaInspector extends JInternalFrame {
         
         lblNmParqumetros = new JLabel("Parqu\u00EDmetro");
         GridBagConstraints gbc_lblNmParqumetros = new GridBagConstraints();
-        gbc_lblNmParqumetros.insets = new Insets(0, 0, 0, 5);
-        gbc_lblNmParqumetros.gridx = 1;
+        gbc_lblNmParqumetros.insets = new Insets(0, 0, 5, 5);
+        gbc_lblNmParqumetros.gridx = 0;
         gbc_lblNmParqumetros.gridy = 2;
         panel.add(lblNmParqumetros, gbc_lblNmParqumetros);
         
@@ -197,10 +210,28 @@ public class VentanaInspector extends JInternalFrame {
         comboBox_2 = new JComboBox();
         GridBagConstraints gbc_comboBox_2 = new GridBagConstraints();
         gbc_comboBox_2.fill = GridBagConstraints.HORIZONTAL;
-        gbc_comboBox_2.insets = new Insets(0, 0, 0, 5);
-        gbc_comboBox_2.gridx = 2;
+        gbc_comboBox_2.insets = new Insets(0, 0, 5, 5);
+        gbc_comboBox_2.gridx = 1;
         gbc_comboBox_2.gridy = 2;
         panel.add(comboBox_2, gbc_comboBox_2);
+        
+        JButton btnAgregarPatente = new JButton("Agregar patente");
+        GridBagConstraints gbc_btnAgregarPatente = new GridBagConstraints();
+        gbc_btnAgregarPatente.fill = GridBagConstraints.HORIZONTAL;
+        gbc_btnAgregarPatente.gridwidth = 2;
+        gbc_btnAgregarPatente.insets = new Insets(0, 0, 0, 5);
+        gbc_btnAgregarPatente.gridx = 0;
+        gbc_btnAgregarPatente.gridy = 3;
+        panel.add(btnAgregarPatente, gbc_btnAgregarPatente);
+        btnAgregarPatente.addMouseListener(new MouseAdapter() {
+        	@Override
+        	public void mouseClicked(MouseEvent arg0) {
+        		String patente = JOptionPane.showInputDialog("Agregar patente:");
+        		listaPatentes.add(patente); //lista lógica
+        		listModel.addElement(patente); //lista gráfica        		
+        	    System.out.println("Patente agregada: " + listaPatentes.getLast());        		
+        	}
+        });
         
         scrollPane = new JScrollPane();
         getContentPane().add(scrollPane, BorderLayout.CENTER);        
