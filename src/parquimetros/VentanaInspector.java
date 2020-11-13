@@ -152,7 +152,7 @@ public class VentanaInspector extends JInternalFrame {
         try {
 			MaskFormatter formatter = new MaskFormatter("LLL###");
 			formattedTextField = new JFormattedTextField(formatter);
-			formattedTextField.setText("");
+			formattedTextField.setValue(null);
 		} catch (ParseException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -201,18 +201,17 @@ public class VentanaInspector extends JInternalFrame {
         btnAgregarPatente.addMouseListener(new MouseAdapter() {
         	@Override
         	public void mouseClicked(MouseEvent arg0) {
-        		//String patente = JOptionPane.showInputDialog("Agregar patente:");
         		String patente= formattedTextField.getText();
         		
-        		if (patente=="      ") {
+        		if (patente.equals("      ")) {
         			JOptionPane.showMessageDialog(null, "Debe ingresar la patente");
         		}
         		else {
         			listaPatentes.add(patente); //lista lógica
             		listModel.addElement(patente); //lista gráfica 
-            		formattedTextField.setText(""); 
             		System.out.println("Patente agregada: " + listaPatentes.getLast());  
         		}
+    			formattedTextField.setValue(null);
         	}
         });
         
