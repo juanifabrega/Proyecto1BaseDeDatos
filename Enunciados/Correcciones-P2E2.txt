@@ -1,0 +1,33 @@
+Comisión Fabrega-Schwerdt
+---------------------------
+
+Interfaz: Muy bien
+
+................................................................................ 
+Sección administrador:
+
+- No permite ejecutar sentencias de manipulacion de datos: insert, delete, 
+  update, create table, etc. Al hacerlo da un error: "Can´t not issue data 
+  manipulation statements with executeQuery()"
+  Ver enunciado donde dice:"... que permita introducir sentencias SQL arbitrarias
+  (select, insert, delete, update, etc) mostrando el resultado (en el caso que 
+  corresponda) de la ejecuciòn de dicha consulta en una tabla..."
+
+  Deberían utilizar el método boolean execute(String sql) que permite ejecutar 
+  cualquier tipo de SQL. Si es una consulta que devuelve un resultado lo recuperan 
+  luego mediante el método ResultSet getResultSet();
+
+
+................................................................................ 
+Sección inspector: Muy bien!
+
+Solo algunas observaciones:
+
+- Se deberían listar las patentes a medida que se van cargando.
+
+- Deberían también filtrar que el ingreso de patentes sea de la forma LLLNNN (L=letra, N=numero). 
+si bien no se muestran las patentes inválidas, se permite ingresar cualquier secuencia alfanumérica.
+
+Es importante validar, cuando se puede, el formato de los datos ingresados en la aplicación.
+Pueden resoverlo fácilmente incorporando una mascara (mask) al campo de texto.
+
