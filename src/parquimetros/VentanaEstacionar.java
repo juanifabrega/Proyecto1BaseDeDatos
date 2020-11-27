@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 
 import javax.swing.JInternalFrame;
 import javax.swing.WindowConstants;
@@ -12,6 +13,8 @@ import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
+
+import quick.dbtable.DBTable;
 
 import java.awt.GridBagLayout;
 import javax.swing.JComboBox;
@@ -33,8 +36,9 @@ import javax.swing.JTable;
 public class VentanaEstacionar extends JInternalFrame {
 
 	private BDD bdd;
-	private JTable tabla;
-	private TableModel modeloTabla;
+//	private JTable tablee;
+	private DBTable tabla;
+//	private TableModel modeloTabla;
 	
 	private JComboBox cbCalle, cbAltura, cbParquimetro, cbTarjeta;
 	
@@ -145,7 +149,35 @@ public class VentanaEstacionar extends JInternalFrame {
         JButton btnEstacionamiento = new JButton("<html>Abrir / cerrar<br>estacionamiento</html>");
         btnEstacionamiento.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		// llamar stored procedure
+        		int id_parq = (Integer) cbParquimetro.getItemAt(cbParquimetro.getSelectedIndex());
+        		int id_tarjeta = (Integer) cbTarjeta.getItemAt(cbTarjeta.getSelectedIndex());
+        		String sql = "call conectar('" + id_parq + "','"  +id_tarjeta + "');";
+        		
+        		try {     		
+	   		    	 // seteamos la consulta a partir de la cual se obtendrán los datos para llenar la tabla
+	   		    	 tabla.setSelectSql(sql);
+	   	
+	   		    	  // obtenemos el modelo de la tabla a partir de la consulta para 
+	   		    	  // modificar la forma en que se muestran de algunas columnas  
+	   		    	  tabla.createColumnModelFromQuery();    	    
+	   		    	  for (int i = 0; i < tabla.getColumnCount(); i++) { 
+	   		    		  
+	   		    		  // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
+	   		    		 if	 (tabla.getColumn(i).getType()==Types.TIME)     		 
+	   		    		    tabla.getColumn(i).setType(Types.CHAR);  
+	   		    		 
+	   		    		 // cambiar el formato en que se muestran los valores de tipo DATE
+	   		    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
+	   		    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");		    		 
+	   		          }  
+	   		    	  // actualizamos el contenido de la tabla.
+	   		    	  tabla.refresh();   
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+        		
+        		
+        		
         	}
         });
         GridBagConstraints gbc_btnEstacionamiento = new GridBagConstraints();
@@ -194,73 +226,15 @@ public class VentanaEstacionar extends JInternalFrame {
         panel.add(cbTarjeta, gbc_cbTarjeta);
         actualizarCbTarjeta();
 
-        actualizarCbCalle();        
-        
-        JScrollPane scrollPane = new JScrollPane();
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
+        actualizarCbCalle();      
                
-               
-
-        final class TablaDeApertura extends DefaultTableModel{
-   	        private Class[] types;
-            private boolean[] canEdit;
-            
-            TablaDeApertura(){
-            	super(new String[][] {},
-            		  new String[]{"Tipo", "Exito", "Tiempo"});
-            	types = new Class[] {java.lang.String.class, 
-            	                     java.lang.String.class,
-            	                     java.lang.String.class       	                     
-            	};
-            	canEdit = new boolean[] { false, false, false};
-            };             	
-        		             
-            public Class getColumnClass(int columnIndex){
-               return types[columnIndex];
-            }
-            public boolean isCellEditable(int rowIndex, int columnIndex){
-               return canEdit[columnIndex];
-            }         	          	            	
-        };    
-        final class TablaDeCierre extends DefaultTableModel{
-   	        private Class[] types;
-            private boolean[] canEdit;
-            
-            TablaDeCierre(){
-            	super(new String[][] {},
-            		  new String[]{"Tipo", "Tiempo", "Saldo"});
-            	types = new Class[] {java.lang.String.class, 
-            	                     java.lang.String.class,
-            	                     java.lang.Integer.class       	                     
-            	};
-            	canEdit = new boolean[] { false, false, false};
-            };             	
-        		             
-            public Class getColumnClass(int columnIndex){
-               return types[columnIndex];
-            }
-            public boolean isCellEditable(int rowIndex, int columnIndex){
-               return canEdit[columnIndex];
-            }         	          	            	
-        };
+        JPanel panelTabla= new JPanel();
+        panelTabla.setLayout(new BorderLayout(0,0));
+        getContentPane().add(panelTabla, BorderLayout.CENTER);   
         
-        
-        // MODIFICAR ABAJO
-        
-        // Si es de Apertura
-        modeloTabla = new TablaDeApertura(); 
-        // Sino, si es de Cierre, entonces
-        modeloTabla = new TablaDeCierre(); 
-        
-        // MODIFICAR ARRIBA
-        
-        
-        tabla = new JTable(); 
-        scrollPane.setViewportView(tabla);              
-        tabla.setModel(modeloTabla); 
-        tabla.setAutoCreateRowSorter(true); 
-		 
-		 
+        tabla = new DBTable();    	
+    	panelTabla.add(tabla);                   
+        tabla.setEditable(false); 
 		
 	}
 	
