@@ -133,40 +133,29 @@ public class VentanaConsultas extends JInternalFrame {
 	}
 	
 	
+	private void actualizarTabla() {
+		try {
+			String sql = textArea.getText();
+			ResultSet rs = bdd.ejecutarSQL(sql);
+			
+			if (rs != null) 
+				tabla.refresh(rs);
+			else 
+				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this),
+				                              "Modificacion realizada exitosamente",
+				                              "Correcto", 
+				                              JOptionPane.INFORMATION_MESSAGE);			
 
-	   private void actualizarTabla() {
-	      try {    	    	  
-	    	  
-	    	 String sql = textArea.getText();
-	    	 String tipo = String.valueOf((sql.trim()).charAt(0));
-	    	 if(!(tipo.equals("S") || tipo.equals("s"))) { // es una modificacion
-	    		 bdd.ejecutarModificacion(sql);
-	    		 JOptionPane.showMessageDialog(null,"Modificación realizada exitosamente.","Exito", JOptionPane.INFORMATION_MESSAGE);
-	    		 
-	    	 }
-	    	 else { // es una consulta
-		    	  
-		    	 // seteamos la consulta a partir de la cual se obtendrán los datos para llenar la tabla
-		    	 tabla.setSelectSql(textArea.getText().trim());
-	
-		    	  // obtenemos el modelo de la tabla a partir de la consulta para 
-		    	  // modificar la forma en que se muestran de algunas columnas  
-		    	  tabla.createColumnModelFromQuery();    	    
-		    	  for (int i = 0; i < tabla.getColumnCount(); i++) { 
-		    		  
-		    		  // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
-		    		 if	 (tabla.getColumn(i).getType()==Types.TIME)     		 
-		    		    tabla.getColumn(i).setType(Types.CHAR);  
-		    		 
-		    		 // cambiar el formato en que se muestran los valores de tipo DATE
-		    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
-		    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");		    		 
-		          }  
-		    	  // actualizamos el contenido de la tabla.
-		    	  tabla.refresh();
-		       }
-	      }
-	      catch (SQLException ex) {
+	    	  for (int i = 0; i < tabla.getColumnCount(); i++) { 	    		  
+	    		  // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
+	    		 if	 (tabla.getColumn(i).getType()==Types.TIME)     		 
+	    		    tabla.getColumn(i).setType(Types.CHAR);  	    		 
+	    		 // cambiar el formato en que se muestran los valores de tipo DATE
+	    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
+	    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");		    		 
+	          }  
+						
+		} catch (SQLException ex) {
 	         System.out.println("SQLException: " + ex.getMessage());
 	         System.out.println("SQLState: " + ex.getSQLState());
 	         System.out.println("VendorError: " + ex.getErrorCode());
@@ -174,8 +163,8 @@ public class VentanaConsultas extends JInternalFrame {
 	                                       ex.getMessage() + "\n", 
 	                                       "Error al ejecutar la consulta.",
 	                                       JOptionPane.ERROR_MESSAGE);
-	      }
-	   }
+		}
+	}
 
 	
 	public void mostrarListas() {

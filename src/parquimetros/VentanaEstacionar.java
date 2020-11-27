@@ -37,9 +37,7 @@ import javax.swing.JTable;
 public class VentanaEstacionar extends JInternalFrame {
 
 	private BDD bdd;
-//	private JTable tablee;
 	private DBTable tabla;
-//	private TableModel modeloTabla;
 	
 	private JComboBox cbCalle, cbAltura, cbParquimetro, cbTarjeta;
 	

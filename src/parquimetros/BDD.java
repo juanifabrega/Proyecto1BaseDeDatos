@@ -57,7 +57,7 @@ public class BDD {
 	
 	public ResultSet ejecutarSentencia(String sql) throws SQLException {
 		stmt = conexion.createStatement();
-		rs = stmt.executeQuery(sql);
+		rs = stmt.executeQuery(sql.trim());
 		return rs;
 	}
 	
@@ -68,7 +68,7 @@ public class BDD {
 	
 	public void ejecutarModificacion(String sql) throws SQLException {
 		stmt = conexion.createStatement();
-		stmt.executeUpdate(sql);		
+		stmt.executeUpdate(sql.trim());		
 	}
 	
 	public void limpiarModificacion() throws SQLException{
@@ -81,6 +81,12 @@ public class BDD {
 	
 	public boolean estaConectado() {
 		return conexion != null;
+	}
+	
+	public ResultSet ejecutarSQL(String sql) throws SQLException {
+		stmt = conexion.createStatement();
+		stmt.execute(sql.trim());
+		return stmt.getResultSet();
 	}
 	
 }
