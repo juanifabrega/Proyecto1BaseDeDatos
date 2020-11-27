@@ -22,19 +22,19 @@ VALUES (87654321,'Lionel','Messi','Barcelona 2020','4516200',5);
 #Insercion en automoviles
 
 INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('ABC123','Wolkswagen','Gol','Blanco',57387404);
+VALUES ('abc123','Wolkswagen','Gol','Blanco',57387404);
 
 INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('TDA987','Chevrolet','Corsa','Rojo',96385214);
+VALUES ('tda987','Chevrolet','Corsa','Rojo',96385214);
 
 INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('BSD114','Fiat','Palio','Rojo',12345678);
+VALUES ('bsd114','Fiat','Palio','Rojo',12345678);
 
 INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('D10S10','Lamborghinni','Aventador','Naranja',14785296);
+VALUES ('dio101','Lamborghinni','Aventador','Naranja',14785296);
 
 INSERT INTO automoviles(patente,marca,modelo,color,dni)
-VALUES ('AMB-10','Reanult','Sandero','Gris',87654321);
+VALUES ('amb100','Reanult','Sandero','Gris',87654321);
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en tipo_tarjetas
@@ -49,19 +49,19 @@ VALUES ('Premium','0.47');
 #Insercion en tarjetas
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(1,100.50,'Basica','ABC123');
+VALUES(1,100.50,'Basica','abc123');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(2,70.26,'Basica','TDA987');
+VALUES(2,70.26,'Basica','tda987');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(3,95.99,'Basica','BSD114');
+VALUES(3,95.99,'Basica','bsd114');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(4,999.99,'Premium','D10S10');
+VALUES(4,999.99,'Premium','dio101');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(5,999.99,'Premium','AMB-10');
+VALUES(5,999.99,'Premium','amb100');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en inspectores
@@ -179,7 +179,7 @@ INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
 VALUES (12,333,'Estomba','1200','vi','T');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
-VALUES (13,333,'Estomba','1200','sa','M');
+VALUES (13,333,'Estomba','1200','sa','T');
 
 INSERT INTO asociado_con(id_asociado_con,legajo,calle,altura,dia,turno)
 VALUES (14,333,'Estomba','1200','do','T');
@@ -195,10 +195,10 @@ VALUES (16,333,'Rincon','100','ma','M');
 #Insercion en multas
 
 INSERT INTO multa(numero,fecha,hora,patente,id_asociado_con)
-VALUES (1,'2018-12-09','17:00:00','D10S10',1);
+VALUES (1,'2018-12-09','17:00:00','dio101',1);
 
 INSERT INTO multa(numero,fecha,hora,patente,id_asociado_con)
-VALUES (2,'2019-10-01','20:30:59','D10S10',2);
+VALUES (2,'2019-10-01','20:30:59','dio101',2);
 
 INSERT INTO multa(numero,fecha,hora,patente,id_asociado_con)
-VALUES (3,'2001-6-19','18:45:00','D10S10',3);
+VALUES (3,'2001-6-19','18:45:00','dio101',3);
