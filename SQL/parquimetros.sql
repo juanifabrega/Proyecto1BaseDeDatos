@@ -264,3 +264,4 @@ CREATE USER 'parquimetro'@'%' IDENTIFIED BY 'parq';
 GRANT SELECT ON parquimetros.ubicaciones TO 'parquimetro'@'%';
 GRANT SELECT ON parquimetros.parquimetros TO 'parquimetro'@'%';
 GRANT SELECT ON parquimetros.tarjetas TO 'parquimetro'@'%';
+GRANT execute on procedure parquimetros.conectar TO 'parquimetro'@'%';
