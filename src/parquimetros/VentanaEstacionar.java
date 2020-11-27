@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import javax.swing.JInternalFrame;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -16,6 +18,8 @@ import javax.swing.JComboBox;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -54,6 +58,28 @@ public class VentanaEstacionar extends JInternalFrame {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		
+		 addInternalFrameListener(new InternalFrameAdapter() {
+		 	@Override
+		 	public void internalFrameClosing(InternalFrameEvent e) {
+		 		dispose();
+		 		try {
+		 			bdd.desconectar();
+		 			cbCalle.removeAllItems();
+		 			cbAltura.removeAllItems();
+		 			cbParquimetro.removeAllItems();
+		 			cbTarjeta.removeAllItems();
+				} catch (SQLException ex) {
+					JOptionPane.showMessageDialog(null,
+		                    "No se pudo desconectar de la base de datos.\n" + ex.getMessage(),
+		                     "Error", JOptionPane.ERROR_MESSAGE);
+			        System.out.println("SQLException: " + ex.getMessage());
+			        System.out.println("SQLState: " + ex.getSQLState());
+			        System.out.println("VendorError: " + ex.getErrorCode());
+				}
+		 	}
+		 });		 
+		
 		
         
         JPanel panel = new JPanel();
