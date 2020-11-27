@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 
 import javax.swing.JInternalFrame;
@@ -154,24 +155,22 @@ public class VentanaEstacionar extends JInternalFrame {
         		String sql = "call conectar('" + id_parq + "','"  +id_tarjeta + "');";
         		
         		try {     		
-	   		    	 // seteamos la consulta a partir de la cual se obtendrán los datos para llenar la tabla
-	   		    	 tabla.setSelectSql(sql);
-	   	
-	   		    	  // obtenemos el modelo de la tabla a partir de la consulta para 
-	   		    	  // modificar la forma en que se muestran de algunas columnas  
-	   		    	  tabla.createColumnModelFromQuery();    	    
-	   		    	  for (int i = 0; i < tabla.getColumnCount(); i++) { 
-	   		    		  
-	   		    		  // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
-	   		    		 if	 (tabla.getColumn(i).getType()==Types.TIME)     		 
-	   		    		    tabla.getColumn(i).setType(Types.CHAR);  
-	   		    		 
-	   		    		 // cambiar el formato en que se muestran los valores de tipo DATE
-	   		    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
-	   		    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");		    		 
-	   		          }  
-	   		    	  // actualizamos el contenido de la tabla.
-	   		    	  tabla.refresh();   
+        	         ResultSet rs = bdd.ejecutarSentencia(sql);
+                     
+        	         //actualiza el contenido de la tabla con los datos del resulset rs
+        	          tabla.refresh(rs);
+        	          
+        	          for (int i = 0; i < tabla.getColumnCount(); i++) { 
+    		    		  
+    		    		  // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
+    		    		 if	 (tabla.getColumn(i).getType()==Types.TIME)     		 
+    		    		    tabla.getColumn(i).setType(Types.CHAR);  
+    		    		 
+    		    		 // cambiar el formato en que se muestran los valores de tipo DATE
+    		    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
+    		    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");		
+    		    		 
+    		          }  
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -234,8 +233,8 @@ public class VentanaEstacionar extends JInternalFrame {
         
         tabla = new DBTable();    	
     	panelTabla.add(tabla);                   
-        tabla.setEditable(false); 
-		
+        tabla.setEditable(false);
+        
 	}
 	
 	
