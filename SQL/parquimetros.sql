@@ -161,6 +161,36 @@ CREATE TABLE multa(
 
 )ENGINE=InnoDB;
 
+CREATE TABLE ventas(
+	id_tarjeta INT UNSIGNED NOT NULL,
+	tipo VARCHAR(45) NOT NULL,
+	saldo DECIMAL(5,2) NOT NULL,
+	fecha DATE NOT NULL,
+	hora TIME NOT NULL,
+
+	CONSTRAINT pk_ventas PRIMARY KEY (id_tarjeta),
+
+	CONSTRAINT FK_ventas_tarjetas FOREIGN KEY (id_tarjeta) REFERENCES tarjetas(id_tarjeta)
+		ON DELETE RESTRICT ON UPDATE CASCADE,
+
+	CONSTRAINT FK_ventas_tipo FOREIGN KEY (tipo) REFERENCES tipos_tarjeta(tipo)
+		ON DELETE RESTRICT ON UPDATE CASCADE
+
+)ENGINE=InnoDB;
+
+#-----------------------------------------------------------------------------------------------
+#creacion de triggers
+
+delimiter !
+CREATE TRIGGER venta_tarjetas
+AFTER INSERT ON tarjetas
+FOR EACH ROW
+BEGIN
+	INSERT INTO ventas (id_tarjeta,tipo,saldo,fecha,hora)
+	VALUES (NEW.id_tarjeta,NEW.tipo,NEW.saldo,curdate(),curtime());
+END; !
+delimiter ;
+
 #-----------------------------------------------------------------------------------------------
 #creacion del procedimiento conectar
 
