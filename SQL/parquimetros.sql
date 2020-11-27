@@ -1,11 +1,11 @@
-# creo de la Base de Datos
+#creo de la Base de Datos
 CREATE DATABASE parquimetros;
 
-# selecciono la base de datos sobre la cual voy a hacer modificaciones
+#selecciono la base de datos sobre la cual voy a hacer modificaciones
 USE parquimetros;
 
 #-----------------------------------------------------------------------------------------------
-# creación Tablas para las entidades
+#creación Tablas para las entidades
 
 CREATE TABLE conductores(
 	dni INT UNSIGNED NOT NULL,
@@ -248,7 +248,6 @@ GRANT SELECT ON parquimetros.tarjetas TO 'venta'@'%';
 GRANT SELECT ON parquimetros.automoviles TO 'venta'@'%';
 GRANT SELECT ON parquimetros.tipos_tarjeta TO 'venta'@'%';
 
-
 #creacion del usuario inspector
 CREATE USER 'inspector'@'%' IDENTIFIED BY 'inspector';
 GRANT SELECT ON parquimetros.inspectores TO 'inspector'@'%';
@@ -259,3 +258,9 @@ GRANT INSERT ON parquimetros.accede TO 'inspector'@'%';
 GRANT SELECT ON parquimetros.parquimetros TO 'inspector'@'%';
 GRANT SELECT ON parquimetros.asociado_con TO 'inspector'@'%';
 GRANT SELECT ON parquimetros.ubicaciones TO 'inspector'@'%';
+
+#creacion del usuario parquimetro
+CREATE USER 'parquimetro'@'%' IDENTIFIED BY 'parq';
+GRANT SELECT ON parquimetros.ubicaciones TO 'parquimetro'@'%';
+GRANT SELECT ON parquimetros.parquimetros TO 'parquimetro'@'%';
+GRANT SELECT ON parquimetros.tarjetas TO 'parquimetro'@'%';
