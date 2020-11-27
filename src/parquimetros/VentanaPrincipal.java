@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
+
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
@@ -21,10 +23,12 @@ public class VentanaPrincipal {
 	private JMenuBar menu ;
 	private static JMenuItem botonAdmin;
 	private static JMenuItem botonInspector;
+	private static JMenuItem botonEstacionar;
 	private VentanaConsultas ventanaConsultas;
 	private VentanaLoginAdmin ventanaLoginAdmin;
 	private VentanaInspector ventanaInspector;
 	private VentanaLoginInspector ventanaLoginInspector;
+	private VentanaEstacionar ventanaEstacionar;
 	
 	
 	public static void main(String[] args) {
@@ -49,6 +53,9 @@ public class VentanaPrincipal {
 		
         ventanaInspector = new VentanaInspector();
         frame.getContentPane().add(ventanaInspector);
+        
+        ventanaEstacionar = new VentanaEstacionar();
+        frame.getContentPane().add(ventanaEstacionar);
 	}
 	
 	
@@ -93,7 +100,7 @@ public class VentanaPrincipal {
 		
 		botonAdmin.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible())
+            	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible() || ventanaEstacionar.isVisible())
         			JOptionPane.showMessageDialog(null,
                             "Ya hay una conexión activa.\nCierre para iniciar otra..",
                              "Error", JOptionPane.ERROR_MESSAGE);
@@ -132,7 +139,7 @@ public class VentanaPrincipal {
 		
 		botonInspector.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-            	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible())
+            	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible() || ventanaEstacionar.isVisible())
         			JOptionPane.showMessageDialog(null,
                             "Ya hay una conexión activa.\nCierre para iniciar otra..",
                              "Error", JOptionPane.ERROR_MESSAGE);
@@ -142,6 +149,51 @@ public class VentanaPrincipal {
             	}
              }
         });
+		
+		
+
+		botonEstacionar = new JMenuItem("Estacionar");
+		botonEstacionar.setBorder(borde);
+		menu.add(botonEstacionar);
+		botonEstacionar.addMouseListener(new MouseAdapter() {			
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				if(botonAdmin.isEnabled()) {
+					Color c = botonAdmin.getBackground();
+					Color newColor = new Color(c.getRed()-40,c.getGreen()-40,c.getBlue()-40);
+					botonEstacionar.setBackground(newColor);
+					
+					Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK);
+					botonEstacionar.setBorder(borde);		
+				}
+			}
+		    @Override
+		    public void mouseExited(MouseEvent e) {
+		        botonEstacionar.setBackground(null);
+				Border borde = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.DARK_GRAY);
+				botonEstacionar.setBorder(borde);
+		    }
+			
+		});			
+		
+		
+		botonEstacionar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+            	if(ventanaConsultas.isVisible() || ventanaInspector.isVisible())
+        			JOptionPane.showMessageDialog(null,
+                            "Ya hay una conexión activa.\nCierre para iniciar otra..",
+                             "Error", JOptionPane.ERROR_MESSAGE);
+            	else {
+            	    ventanaEstacionar.setVisible(true); 
+    	    		try {
+						ventanaEstacionar.setMaximum(true);
+					} catch (PropertyVetoException e) {
+						e.printStackTrace();
+					}
+            	}
+             }
+        });
+		
 	}
 		
 }
