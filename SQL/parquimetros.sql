@@ -1,11 +1,11 @@
-# Creo de la Base de Datos
+# creo de la Base de Datos
 CREATE DATABASE parquimetros;
 
 # selecciono la base de datos sobre la cual voy a hacer modificaciones
 USE parquimetros;
 
 #-----------------------------------------------------------------------------------------------
-# Creación Tablas para las entidades
+# creación Tablas para las entidades
 
 CREATE TABLE conductores(
 	dni INT UNSIGNED NOT NULL,
@@ -162,7 +162,71 @@ CREATE TABLE multa(
 )ENGINE=InnoDB;
 
 #-----------------------------------------------------------------------------------------------
-#Creacion de vistas
+#creacion del procedimiento conectar
+
+delimiter !
+
+CREATE PROCEDURE conectar(IN idtarjeta INTEGER,IN idparq INTEGER)
+begin
+	declare saldo_nuevo DECIMAL(5,2);
+	declare fecha_estaciono DATE;
+	declare hora_estaciono TIME;
+	declare saldo_actual DECIMAL(5,2);
+	declare fecha_actual DATE;
+	declare hora_actual TIME;
+	declare tiempo_estacionamiento TIME;
+	declare tarjeta_descuento DECIMAL(3,2);
+	declare precio_minuto DECIMAL(5,2);
+
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+    	SELECT 'Error: Transacción revertida' AS operacion;
+        ROLLBACK;
+    END;
+
+	START TRANSACTION;
+
+	#controlo si la tarjeta y el parquimetro existen
+		if not(exists(SELECT * FROM tarjetas WHERE  id_tarjeta=idtarjeta) AND exists(SELECT * FROM parquimetros WHERE id_parq=idparq)) then
+			SELECT "ERROR: La tarjeta y/o el parquimetros son incorrectos" AS operacion;
+		else
+			#inicializo las variables que voy a necesitar tanto para una apertura como para un cierre de estacionamiento
+			SELECT saldo into saldo_actual FROM tarjetas WHERE id_tarjeta=idtarjeta;
+			SELECT tarifa into precio_minuto FROM parquimetros NATURAL JOIN ubicaciones WHERE id_parq=idparq;
+	      	SELECT descuento into tarjeta_descuento FROM tarjetas NATURAL JOIN tipos_tarjeta WHERE id_tarjeta=idtarjeta;
+	      	#debo identificar si se trata de una apertura o cierra de un estacionamiento
+			#si se trata de un cierre de estacionamiento
+			if exists(SELECT * FROM estacionamientos WHERE id_parq=idparq AND id_tarjeta=idtarjeta AND fecha_sal=NULL AND hora_sal=NULL) then
+				#inicializo y recupero valores que necesito para poder operar
+				SET fecha_actual=CURRENT_DATE();
+		        SET hora_actual=CURRENT_TIME();
+				SELECT fecha_ent into fecha_estaciono FROM estacionamientos WHERE id_tarjeta=idtarjeta AND id_parq=idparq AND fecha_sal=NULL AND hora_sal=NULL;
+		        SELECT hora_ent into hora_estaciono FROM estacionamientos WHERE id_tarjeta=idtarjeta AND id_parq=idparq AND fecha_sal=NULL AND hora_sal=NULL;
+		        #cierro el estacionamiento
+		        UPDATE estacionamientos SET fecha_sal=fecha_actual,hora_sal=hora_actual WHERE id_parq=idparq AND id_tarjeta=idtarjeta AND hora_ent=hora_estaciono AND fecha_ent=fecha_estaciono;
+		        SET tiempo_estacionamiento=TIMEDIFF( TIMESTAMP(fecha_actual,hora_actual),TIMESTAMP(fecha_estaciono,hora_estaciono));
+		        SET saldo_nuevo=greatest(-999.99,(saldo_actual - ((time_to_sec(tiempo_estacionamiento)/60)*precio_minuto*(1 - tarjeta_descuento)))) ;
+		        UPDATE tarjetas SET saldo=saldo_nuevo WHERE id_tarjeta=idtarjeta;
+		        #muestro la opecion
+		        SELECT "cierre" AS operacion, time_to_sec(tiempo_estacionamiento)/60 AS tiempo_estacionado, saldo_nuevo AS saldo;
+	   		else
+	   			#se trata de una apertura de un estacionamiento
+	   			#se controla que tenga saldo positivo
+	   			if (saldo_actual)<=0 then
+	   				SELECT "aperturta" AS operacion, "fallida" AS resultado, saldo_actual/(precio_minuto*(1-descontar)) AS tiempo_disponible;
+	   			else
+	   				INSERT INTO estacionamientos VALUES(idtarjeta,idparq,fecha_actual,hora_actual,null,null);
+	   				SELECT "apertura" AS operacion, "exitosa" AS resultado, saldo_actual/(precio_minuto*(1-descontar)) AS tiempo_disponible;
+	   			end if;
+	   		end if;
+		end if;
+	commit; 
+end; !
+
+delimiter ;
+
+#-----------------------------------------------------------------------------------------------
+#creacion de vistas
 
 #creacion de la vista estacionados
 CREATE VIEW estacionados AS
@@ -171,7 +235,7 @@ CREATE VIEW estacionados AS
 	WHERE fecha_sal is NULL AND hora_sal is NULL;    
 
 #-----------------------------------------------------------------------------------------------
-#Creacion de usuarios y privilegios
+#creacion de usuarios y privilegios
 
 #creacion del usuario admin
 CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
