@@ -69,15 +69,15 @@ public class VentanaInspector extends JInternalFrame {
 	               false); // iconifiable
 		 setVisible(false);
 		 bdd = new BDD();
-		 try {
-			bdd.conectar("inspector", "inspector");
-		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		 try {
+//			bdd.conectar("inspector", "inspector");
+//		} catch (ClassNotFoundException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		} catch (SQLException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//		}
 		 listaPatentes = new LinkedList<String>();
 		 
 		 addInternalFrameListener(new InternalFrameAdapter() {

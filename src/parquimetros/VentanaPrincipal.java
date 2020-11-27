@@ -54,6 +54,8 @@ public class VentanaPrincipal {
         ventanaInspector = new VentanaInspector();
         frame.getContentPane().add(ventanaInspector);
         
+        ventanaEstacionar = new VentanaEstacionar();
+        frame.getContentPane().add(ventanaEstacionar);
 	}
 	
 	
