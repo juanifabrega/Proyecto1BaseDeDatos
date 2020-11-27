@@ -65,10 +65,6 @@ public class VentanaEstacionar extends JInternalFrame {
 		 		dispose();
 		 		try {
 		 			bdd.desconectar();
-		 			cbCalle.removeAllItems();
-		 			cbAltura.removeAllItems();
-		 			cbParquimetro.removeAllItems();
-		 			cbTarjeta.removeAllItems();
 				} catch (SQLException ex) {
 					JOptionPane.showMessageDialog(null,
 		                    "No se pudo desconectar de la base de datos.\n" + ex.getMessage(),
@@ -328,6 +324,7 @@ public class VentanaEstacionar extends JInternalFrame {
 			e.printStackTrace();
 		}
 	}
+	
 	
 
 }

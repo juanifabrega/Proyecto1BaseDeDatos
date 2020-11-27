@@ -54,8 +54,6 @@ public class VentanaPrincipal {
         ventanaInspector = new VentanaInspector();
         frame.getContentPane().add(ventanaInspector);
         
-        ventanaEstacionar = new VentanaEstacionar();
-        frame.getContentPane().add(ventanaEstacionar);
 	}
 	
 	
@@ -184,7 +182,9 @@ public class VentanaPrincipal {
                             "Ya hay una conexión activa.\nCierre para iniciar otra..",
                              "Error", JOptionPane.ERROR_MESSAGE);
             	else {
-            	    ventanaEstacionar.setVisible(true); 
+                    ventanaEstacionar = new VentanaEstacionar();
+                    frame.getContentPane().add(ventanaEstacionar);
+                    ventanaEstacionar.setVisible(true);
     	    		try {
 						ventanaEstacionar.setMaximum(true);
 					} catch (PropertyVetoException e) {

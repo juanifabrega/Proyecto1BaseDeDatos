@@ -455,6 +455,7 @@ public class VentanaInspector extends JInternalFrame {
 	
 	
 	private void actualizarComboBox() {
+		comboBox.removeAllItems();
 		String sql = "SELECT DISTINCT calle " +
 					 "FROM ubicaciones;";
 		try {
