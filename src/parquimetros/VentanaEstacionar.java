@@ -50,14 +50,11 @@ public class VentanaEstacionar extends JInternalFrame {
 		try {
 			bdd.conectar("parquimetro", "parq");
 		} catch (ClassNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-        
-        
+		
         
         JPanel panel = new JPanel();
         getContentPane().add(panel, BorderLayout.NORTH);
@@ -94,7 +91,7 @@ public class VentanaEstacionar extends JInternalFrame {
         		actualizarCbAltura(calle);
         	}
         });
-        
+      
         
         JLabel lblAltura = new JLabel("Altura");
         GridBagConstraints gbc_lblAltura = new GridBagConstraints();
@@ -121,6 +118,7 @@ public class VentanaEstacionar extends JInternalFrame {
         		actualizarCbParquimetro(calle,altura);
         	}
         });
+        
         
         JButton btnEstacionamiento = new JButton("<html>Abrir / cerrar<br>estacionamiento</html>");
         btnEstacionamiento.addActionListener(new ActionListener() {
@@ -225,10 +223,14 @@ public class VentanaEstacionar extends JInternalFrame {
         };
         
         
+        // MODIFICAR ABAJO
+        
         // Si es de Apertura
         modeloTabla = new TablaDeApertura(); 
         // Sino, si es de Cierre, entonces
         modeloTabla = new TablaDeCierre(); 
+        
+        // MODIFICAR ARRIBA
         
         
         tabla = new JTable(); 
