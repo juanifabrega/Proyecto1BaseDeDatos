@@ -61,7 +61,7 @@ INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
 VALUES(4,999.99,'Premium','dio101');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(5,900.00,'Premium','amb100');
+VALUES(5,999.99,'Premium','amb100');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en inspectores
@@ -76,19 +76,19 @@ VALUES (333,7539510,'Nahuel','Rodriguez',md5('pepeargento2020'));
 #Insercion en ubicaciones
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Estomba','1200',10.00);
+VALUES ('Estomba','1200',00.50);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Estomba','1300',10.00);
+VALUES ('Estomba','1300',00.50);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Belgrano','300',10.00);
+VALUES ('Belgrano','300',03.00);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Alsina','100',10.00);
+VALUES ('Alsina','100',05.00);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Rincon','100',10.00);
+VALUES ('Rincon','100',01.00);
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en parquimetros
@@ -122,6 +122,9 @@ VALUES (1,1,CURDATE(),CURTIME(),NULL,NULL);
 
 INSERT INTO estacionamientos(id_tarjeta,id_parq,fecha_ent,hora_ent,fecha_sal,hora_sal)
 VALUES (2,2,CURDATE(),CURTIME(),NULL,NULL);
+
+INSERT INTO estacionamientos(id_tarjeta,id_parq,fecha_ent,hora_ent,fecha_sal,hora_sal)
+VALUES (2,2,'2020-12-12','18:45:00','2020-12-12','20:45:00');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en accede
