@@ -211,7 +211,7 @@ begin
 
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
-    	SELECT 'Error: Transaccion revertida' AS operacion;
+    	SELECT 'ERROR: Transaccion reestablecida' AS operacion;
         ROLLBACK;
     END;
 
@@ -239,12 +239,12 @@ begin
 				
 				SELECT tarifa INTO precio_minuto FROM (parquimetros NATURAL JOIN ubicaciones) WHERE id_parq=id_estaciono;
 
-				SELECT fecha_ent into fecha_estaciono FROM estacionamientos WHERE id_tarjeta=idtarjeta AND id_parq=id_estaciono AND fecha_sal is NULL AND hora_sal is NULL;
+				SELECT fecha_ent into fecha_estaciono FROM estacionamientos WHERE id_tarjeta=idtarjeta AND id_parq=id_estaciono AND (fecha_sal is NULL) AND (hora_sal is NULL);
 		        
-		        SELECT hora_ent into hora_estaciono FROM estacionamientos WHERE id_tarjeta=idtarjeta AND id_parq=id_estaciono AND fecha_sal is NULL AND hora_sal is NULL;
+		        SELECT hora_ent into hora_estaciono FROM estacionamientos WHERE id_tarjeta=idtarjeta AND id_parq=id_estaciono AND (fecha_sal is NULL) AND (hora_sal is NULL);
 		        												
 		        #cierro el estacionamiento
-		        UPDATE estacionamientos SET fecha_sal=fecha_actual,hora_sal=hora_actual WHERE id_parq=id_estaciono AND id_tarjeta=idtarjeta AND hora_ent=hora_estaciono AND fecha_ent=fecha_estaciono;
+		        UPDATE estacionamientos SET fecha_sal=fecha_actual,hora_sal=hora_actual WHERE id_parq=id_estaciono AND id_tarjeta=idtarjeta AND fecha_ent=fecha_estaciono AND hora_ent=hora_estaciono;
 		        
 		        SET tiempo_estacionamiento=TIMEDIFF( TIMESTAMP(fecha_actual,hora_actual),TIMESTAMP(fecha_estaciono,hora_estaciono));
 		        
@@ -256,19 +256,22 @@ begin
 		        SELECT "cierre" AS operacion, time_to_sec(tiempo_estacionamiento)/60 AS tiempo_estacionado, saldo_nuevo AS saldo;
 	   		else
 	   			#se trata de una apertura de un estacionamiento
-
 	   			SELECT tarifa into precio_minuto FROM parquimetros NATURAL JOIN ubicaciones WHERE id_parq=idparq;	
 
-	   			#se controla que tenga saldo positivo
-	   			if (saldo_actual)<=0 then
-	   				SELECT "aperturta" AS operacion, "fallida" AS resultado, "saldo insuficiente" AS motivo;
-	   			else
+	   			#se controla que el saldo sea positivo
+	   			if (saldo_actual)>0 then
 	   				INSERT INTO estacionamientos VALUES(idtarjeta,idparq,fecha_actual,hora_actual,null,null);
 	   				SELECT "apertura" AS operacion, "exitosa" AS resultado, saldo_actual/(precio_minuto*(1-tarjeta_descuento)) AS tiempo_disponible;
+	   			else
+	   				SELECT "aperturta" AS operacion, "inconclusa" AS resultado, "saldo insuficiente" AS motivo;
 	   			end if;
+
 	   		end if;
+
 		end if;
+
 	commit; 
+
 end; !
 
 delimiter ;
