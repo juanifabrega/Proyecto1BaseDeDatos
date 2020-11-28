@@ -87,7 +87,7 @@ CREATE TABLE parquimetros(
 	altura INT UNSIGNED NOT NULL,
 
 	CONSTRAINT pk_parquimetros PRIMARY KEY (id_parq),
-	#a la hora de borrar???
+	
 	CONSTRAINT FK_parquimetros_ubicaciones FOREIGN KEY (calle,altura) REFERENCES ubicaciones(calle,altura)
 
 )ENGINE=InnoDB;
@@ -101,10 +101,10 @@ CREATE TABLE estacionamientos(
 	hora_sal TIME ,
 
 	CONSTRAINT pk_estacionamientos PRIMARY KEY(id_parq,fecha_ent,hora_ent),
-	#a la hora de borrar???
+	
 	CONSTRAINT FK_estacionamientos_tarjeta FOREIGN KEY (id_tarjeta) REFERENCES tarjetas(id_tarjeta)
 		ON DELETE RESTRICT ON UPDATE CASCADE,
-	#a la hora de borrar???
+	
 	CONSTRAINT FK_estacionamientos_parquimetros FOREIGN KEY (id_parq) REFERENCES parquimetros(id_parq)
 		ON DELETE RESTRICT ON UPDATE CASCADE
 	
@@ -117,10 +117,10 @@ CREATE TABLE accede(
 	hora TIME NOT NULL,
 
 	CONSTRAINT pk_accede PRIMARY KEY(id_parq,fecha,hora),
-	#a la hora de borrar???
+	
 	CONSTRAINT FK_accede_inspectores FOREIGN KEY (legajo) REFERENCES inspectores(legajo)
 		ON DELETE RESTRICT ON UPDATE CASCADE,
-	#a la hora de borrar???
+	
 	CONSTRAINT FK_accede_parquimetros FOREIGN KEY (id_parq) REFERENCES parquimetros(id_parq)
 		ON DELETE RESTRICT ON UPDATE CASCADE
 
@@ -135,10 +135,10 @@ CREATE TABLE asociado_con(
 	turno ENUM('M' , 'T') NOT NULL,
 
 	CONSTRAINT pk_asociado_con PRIMARY KEY (id_asociado_con),
-	#a la hora de borrar???
+	
 	CONSTRAINT FK_asociado_con_inspectores FOREIGN KEY (legajo) REFERENCES inspectores(legajo)
 		ON DELETE RESTRICT ON UPDATE CASCADE,
-	#a la hora de borrar???
+	
 	CONSTRAINT FK_asociado_con_ubicaiones FOREIGN KEY (calle,altura) REFERENCES ubicaciones(calle,altura)
 		ON DELETE RESTRICT ON UPDATE CASCADE
 
