@@ -143,8 +143,8 @@ public class VentanaEstacionar extends JInternalFrame {
         	public void actionPerformed(ActionEvent arg0) {
         		int id_parq = (Integer) cbParquimetro.getItemAt(cbParquimetro.getSelectedIndex());
         		int id_tarjeta = (Integer) cbTarjeta.getItemAt(cbTarjeta.getSelectedIndex());
-        		String sql = "call conectar('" + id_parq + "','"  +id_tarjeta + "');";
-        		
+        		String sql = "call conectar(" + id_tarjeta + ","  +id_parq+ ");";
+        		System.out.println(sql);
         		try {     		
         	         ResultSet rs = bdd.ejecutarSentencia(sql);                     
         	         //actualiza el contenido de la tabla con los datos del resulset rs
