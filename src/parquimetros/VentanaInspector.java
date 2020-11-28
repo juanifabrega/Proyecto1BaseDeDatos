@@ -427,7 +427,6 @@ public class VentanaInspector extends JInternalFrame {
 			e.printStackTrace();
 		}	
 		
-		System.out.println("CARGA DE TABLA DE JAVA");
 		String sql1 = "SELECT * "+
 					  "FROM multa " +
 					  "WHERE fecha=CURDATE() AND "+
@@ -442,7 +441,6 @@ public class VentanaInspector extends JInternalFrame {
 			}
 				
 		} catch (SQLException e) {
-			System.out.println("ERROR TABLA DE JAVA");
 			e.printStackTrace();
 		}
 		
@@ -459,8 +457,7 @@ public class VentanaInspector extends JInternalFrame {
 		String sql = "SELECT DISTINCT calle " +
 					 "FROM ubicaciones;";
 		try {
-			ResultSet rs = bdd.ejecutarSentencia(sql);
-			System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
+			ResultSet rs = bdd.ejecutarSentencia(sql);		
 			while(rs.next()) {
 				comboBox.addItem(rs.getString("calle"));
 			}
@@ -519,7 +516,6 @@ public class VentanaInspector extends JInternalFrame {
 		
 		try { // esto es para mostrar la ventana cuando los datos son correctos
 	    	if(exito) {
-	    		System.out.println("aparece ventana");
 	    		setVisible(true);
 	    		setMaximum(true);
 	            actualizarComboBox();

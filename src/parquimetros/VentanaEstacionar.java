@@ -38,9 +38,9 @@ public class VentanaEstacionar extends JInternalFrame {
 	
 	public VentanaEstacionar() {
 		super("", false, // resizable
-	               true,  // closable
-	               false, // maximizable
-	               false); // iconifiable
+	              true,  // closable
+	              false, // maximizable
+	              false); // iconifiable
 		setVisible(false);
 		setBounds(100, 100, 853, 521);
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
@@ -66,9 +66,6 @@ public class VentanaEstacionar extends JInternalFrame {
 					JOptionPane.showMessageDialog(null,
 		                    "No se pudo desconectar de la base de datos.\n" + ex.getMessage(),
 		                     "Error", JOptionPane.ERROR_MESSAGE);
-			        System.out.println("SQLException: " + ex.getMessage());
-			        System.out.println("SQLState: " + ex.getSQLState());
-			        System.out.println("VendorError: " + ex.getErrorCode());
 				}
 		 	}
 		});	
@@ -144,7 +141,7 @@ public class VentanaEstacionar extends JInternalFrame {
         		int id_parq = (Integer) cbParquimetro.getItemAt(cbParquimetro.getSelectedIndex());
         		int id_tarjeta = (Integer) cbTarjeta.getItemAt(cbTarjeta.getSelectedIndex());
         		String sql = "call conectar(" + id_tarjeta + ","  +id_parq+ ");";
-        		System.out.println(sql);
+        		
         		try {     		
         	         ResultSet rs = bdd.ejecutarSentencia(sql);                     
         	         //actualiza el contenido de la tabla con los datos del resulset rs
@@ -227,8 +224,7 @@ public class VentanaEstacionar extends JInternalFrame {
 			String sql = "SELECT DISTINCT calle " +
 						 "FROM ubicaciones;";
 			try {
-				ResultSet rs = bdd.ejecutarSentencia(sql);
-				System.out.println("Columnas "+rs.getMetaData().getColumnCount());			
+				ResultSet rs = bdd.ejecutarSentencia(sql);		
 				while(rs.next()) {
 					cbCalle.addItem(rs.getString("calle"));
 				}
