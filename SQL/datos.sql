@@ -1,4 +1,4 @@
-USE parquimetros;
+ USE parquimetros;
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en conductores
@@ -40,28 +40,28 @@ VALUES ('amb100','Reanult','Sandero','Gris',87654321);
 #Insercion en tipo_tarjetas
 
 INSERT INTO tipos_tarjeta(tipo,descuento)
-VALUES ('Basica','0.01');
+VALUES ('Basica','0.10');
 
 INSERT INTO tipos_tarjeta(tipo,descuento)
-VALUES ('Premium','0.47');
+VALUES ('Premium','0.50');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en tarjetas
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(1,100.50,'Basica','abc123');
+VALUES(1,999.99,'Basica','abc123');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(2,70.26,'Basica','tda987');
+VALUES(2,999.99,'Basica','tda987');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(3,95.99,'Basica','bsd114');
+VALUES(3,999.99,'Basica','bsd114');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
 VALUES(4,999.99,'Premium','dio101');
 
 INSERT INTO tarjetas(id_tarjeta,saldo,tipo,patente)
-VALUES(5,999.99,'Premium','amb100');
+VALUES(5,900.00,'Premium','amb100');
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en inspectores
@@ -76,19 +76,19 @@ VALUES (333,7539510,'Nahuel','Rodriguez',md5('pepeargento2020'));
 #Insercion en ubicaciones
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Estomba','1200',1.47);
+VALUES ('Estomba','1200',10.00);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Estomba','1300',1.45);
+VALUES ('Estomba','1300',10.00);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Belgrano','300',5.75);
+VALUES ('Belgrano','300',10.00);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Alsina','100',8.38);
+VALUES ('Alsina','100',10.00);
 
 INSERT INTO ubicaciones(calle,altura,tarifa)
-VALUES ('Rincon','100',80.38);
+VALUES ('Rincon','100',10.00);
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en parquimetros
@@ -118,16 +118,10 @@ VALUES (7,7,'Estomba','1300');
 #Insercion en estacionamientos
 
 INSERT INTO estacionamientos(id_tarjeta,id_parq,fecha_ent,hora_ent,fecha_sal,hora_sal)
-VALUES (1,1,CURTIME(),CURDATE(),NULL,NULL);
+VALUES (1,1,CURDATE(),CURTIME(),NULL,NULL);
 
 INSERT INTO estacionamientos(id_tarjeta,id_parq,fecha_ent,hora_ent,fecha_sal,hora_sal)
-VALUES (2,2,CURTIME(),CURDATE(),CURTIME(),CURDATE());
-
-INSERT INTO estacionamientos(id_tarjeta,id_parq,fecha_ent,hora_ent,fecha_sal,hora_sal)
-VALUES (3,3,CURTIME(),CURDATE(),NULL,NULL);
-
-INSERT INTO estacionamientos(id_tarjeta,id_parq,fecha_ent,hora_ent,fecha_sal,hora_sal)
-VALUES (4,3,CURTIME(),'17:00:00',NULL,NULL);
+VALUES (2,2,CURDATE(),CURTIME(),NULL,NULL);
 
 #-----------------------------------------------------------------------------------------------
 #Insercion en accede
