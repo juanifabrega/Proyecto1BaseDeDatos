@@ -1,44 +1,38 @@
 package parquimetros;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import quick.dbtable.DBTable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.sql.Types;
 
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.JInternalFrame;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-
-import quick.dbtable.DBTable;
-
-import java.awt.GridBagLayout;
-import javax.swing.JComboBox;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 
 import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
+
+
 
 public class VentanaEstacionar extends JInternalFrame {
 
+	private static final long serialVersionUID = 1L;
 	private BDD bdd;
-	private DBTable tabla;
-	
+	private DBTable tabla;	
 	private JComboBox cbCalle, cbAltura, cbParquimetro, cbTarjeta;
 	
 	
@@ -62,7 +56,7 @@ public class VentanaEstacionar extends JInternalFrame {
 			e1.printStackTrace();
 		}
 		
-		 addInternalFrameListener(new InternalFrameAdapter() {
+		addInternalFrameListener(new InternalFrameAdapter() {
 		 	@Override
 		 	public void internalFrameClosing(InternalFrameEvent e) {
 		 		dispose();
@@ -77,8 +71,7 @@ public class VentanaEstacionar extends JInternalFrame {
 			        System.out.println("VendorError: " + ex.getErrorCode());
 				}
 		 	}
-		 });		 
-		
+		});	
 		
         
         JPanel panel = new JPanel();
@@ -153,30 +146,25 @@ public class VentanaEstacionar extends JInternalFrame {
         		String sql = "call conectar('" + id_parq + "','"  +id_tarjeta + "');";
         		
         		try {     		
-        	         ResultSet rs = bdd.ejecutarSentencia(sql);
-                     
+        	         ResultSet rs = bdd.ejecutarSentencia(sql);                     
         	         //actualiza el contenido de la tabla con los datos del resulset rs
         	          tabla.refresh(rs);
         	          
-        	          for (int i = 0; i < tabla.getColumnCount(); i++) { 
-    		    		  
+        	          for (int i = 0; i < tabla.getColumnCount(); i++) {     		    		  
     		    		  // para que muestre correctamente los valores de tipo TIME (hora)  		   		  
     		    		 if	 (tabla.getColumn(i).getType()==Types.TIME)     		 
-    		    		    tabla.getColumn(i).setType(Types.CHAR);  
-    		    		 
+    		    		    tabla.getColumn(i).setType(Types.CHAR);      		    		 
     		    		 // cambiar el formato en que se muestran los valores de tipo DATE
     		    		 if	 (tabla.getColumn(i).getType()==Types.DATE)
-    		    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");		
-    		    		 
+    		    		    tabla.getColumn(i).setDateFormat("dd/MM/YYYY");	
     		          }  
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-        		
-        		
-        		
         	}
         });
+        
+        
         GridBagConstraints gbc_btnEstacionamiento = new GridBagConstraints();
         gbc_btnEstacionamiento.gridheight = 2;
         gbc_btnEstacionamiento.insets = new Insets(0, 0, 5, 5);
@@ -202,8 +190,7 @@ public class VentanaEstacionar extends JInternalFrame {
         gbc_cbParquimetro.gridx = 2;
         gbc_cbParquimetro.gridy = 2;
         panel.add(cbParquimetro, gbc_cbParquimetro);
-        
-        
+                
         JLabel lblTarjeta = new JLabel("Tarjeta");
         GridBagConstraints gbc_lblTarjeta = new GridBagConstraints();
         gbc_lblTarjeta.anchor = GridBagConstraints.SOUTH;
@@ -225,14 +212,14 @@ public class VentanaEstacionar extends JInternalFrame {
 
         actualizarCbCalle();      
                
+        
         JPanel panelTabla= new JPanel();
         panelTabla.setLayout(new BorderLayout(0,0));
         getContentPane().add(panelTabla, BorderLayout.CENTER);   
         
         tabla = new DBTable();    	
     	panelTabla.add(tabla);                   
-        tabla.setEditable(false);
-        
+        tabla.setEditable(false);        
 	}
 	
 	
@@ -295,7 +282,5 @@ public class VentanaEstacionar extends JInternalFrame {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
 }
